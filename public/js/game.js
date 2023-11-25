@@ -11,7 +11,7 @@ class Game {
     _b2dctx;
     _itemList = [];
     _destroyList = [];
-    _mouseHandler = [];
+    _controlHandler = [];
 
     constructor(height, width, scale, gravityX, gravityY, framerate, canvasName){
         this._height = height;
@@ -34,7 +34,7 @@ class Game {
     get _b2dctx(){return this._b2dctx;}
     get _itemList(){return this._itemList}
     get _destroyList(){return this._destroyList;}
-    get _mouseHandler(){return this._mouseHandler;}
+    get _controlHandler(){return this._controlHandler;}
     get _world(){return this._world;}
 
     // Setters
@@ -47,7 +47,7 @@ class Game {
     set _b2dctx(b2dctx){this._b2dctx = b2dctx;}
     set _itemList(itemList){this._itemList = itemList;}
     set _destroyList(destroyList){this._destroyList = destroyList;}
-    set _mouseHandler(mouseHandler){this._mouseHandler = mouseHandler;}
+    set _controlHandler(controlHandler){this._controlHandler = controlHandler;}
     set _world(world){this._world = world;}
 
     setupDebugDraw = () => {
@@ -91,8 +91,8 @@ class Game {
         this._destroyList.length = 0;
     };
 
-    addMouseHandler(mousectx, type, runfunc){
-        this._mouseHandler.push(new MouseHandler(mousectx, type, runfunc));
+    addControlHandler(ctx, type, runfunc){
+        this._controlHandler.push(new ControlHandler(ctx, type, runfunc));
     }
 
     _handleMouseDown = (e) => {
