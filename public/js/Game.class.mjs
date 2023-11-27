@@ -1,5 +1,7 @@
 'use strict';
 
+import { b2Vec2, b2BodyDef, b2Body, b2FixtureDef, b2Fixture, b2World, b2MassData, b2PolygonShape, b2CircleShape, b2DebugDraw, b2MouseJointDef, b2EdgeShape } from './defs.js';
+
 class Game {
 
     _height;
@@ -12,6 +14,7 @@ class Game {
     _itemList = [];
     _destroyList = [];
     _controlHandler = [];
+    _interval;
 
     constructor(height, width, scale, gravityX, gravityY, framerate, canvasName){
         this._height = height;
@@ -36,6 +39,7 @@ class Game {
     get _destroyList(){return this._destroyList;}
     get _controlHandler(){return this._controlHandler;}
     get _world(){return this._world;}
+    get _interval(){return this._interval;}
 
     // Setters
     set _height(height){this._height = height;}
@@ -49,6 +53,7 @@ class Game {
     set _destroyList(destroyList){this._destroyList = destroyList;}
     set _controlHandler(controlHandler){this._controlHandler = controlHandler;}
     set _world(world){this._world = world;}
+    set _interval(interval){this._interval = interval;}
 
     setupDebugDraw = () => {
         let b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
@@ -107,3 +112,5 @@ class Game {
 
     }
 }
+
+module.exports = Game;

@@ -1,5 +1,7 @@
 'use strict';
 
+const Box2D = require('box2dweb-commonjs').Box2D;
+
 /**
  * Box2d Web Definitions
  */
@@ -15,3 +17,5 @@ let b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
 let b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 let b2MouseJointDef = Box2D.Dynamics.Joints.b2MouseJointDef;
 let b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape;
+
+module.exports = { b2Vec2, b2BodyDef, b2Body, b2FixtureDef, b2Fixture, b2World, b2MassData, b2PolygonShape, b2CircleShape, b2DebugDraw, b2MouseJointDef, b2EdgeShape };
