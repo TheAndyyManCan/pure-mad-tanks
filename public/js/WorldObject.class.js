@@ -1,26 +1,14 @@
 'use strict';
 
+const { b2Vec2, b2BodyDef, b2Body, b2FixtureDef, b2Fixture, b2World, b2MassData, b2PolygonShape, b2CircleShape, b2DebugDraw, b2MouseJointDef, b2EdgeShape } = require('./defs.js');
+
 class WorldObject {
 
-    #userData = {};
-    #uniqueName;
-    #fixDef = new b2FixtureDef;
-    #bodyDef = new b2BodyDef;
-    #b2dobj;
-
-    // Getters
-    get _userData(){return this.#userData;}
-    get _uniqueName(){return this.#uniqueName;}
-    get _fixDef(){return this.#fixDef;}
-    get _bodyDef(){return this.#bodyDef;}
-    get _b2dobj(){return this.#b2dobj;}
-
-    // Setters
-    set _userData(userData){this.#userData = userData;}
-    set _uniqueName(uniqueName){this.#uniqueName = uniqueName;}
-    set _fixDef(fixDef){this.#fixDef = fixDef;}
-    set _bodyDef(bodyDef){this.#bodyDef = bodyDef;}
-    set _b2dobj(b2dobj){this.#b2dobj = b2dobj;}
+    _userData = {};
+    _uniqueName;
+    _fixDef = new b2FixtureDef();
+    _bodyDef = new b2BodyDef();
+    _b2dobj;
 
     constructor(density, friction, restitution, x, y, SCALE){
         this._fixDef.density = density;
@@ -31,14 +19,14 @@ class WorldObject {
     }
 
     _createObj(world, objid, uniqueName){
-        this._b2dobj = world.CreateBody(this.bodyDef).CreateFixture(this.fixDef);
+        this._b2dobj = world.CreateBody(this._bodyDef).CreateFixture(this._fixDef);
         this.changeUserData("id", objid);
         this.changeUserData("uniqueName", uniqueName);
     }
 
     changeUserData(property, newValue){
         let objdata = this.getBody().GetUserData();
-        this._userData = typeof objdata === undefined || objdata === null?{}:this.userData;
+        this._userData = typeof objdata === undefined || objdata === null?{}:this._userData;
         this._userData[property] = newValue;
         this.getBody().SetUserData(this.userData);
     }
@@ -78,3 +66,4 @@ class CircleWorldObject extends WorldObject {
     }
 }
 
+module.exports = { StaticWorldObject, DynamicWorldObject, CircleWorldObject };
