@@ -2,6 +2,7 @@
 
 const raf = require('raf');
 const { b2Vec2, b2BodyDef, b2Body, b2FixtureDef, b2Fixture, b2World, b2MassData, b2PolygonShape, b2CircleShape, b2DebugDraw, b2MouseJointDef, b2EdgeShape } = require('./defs.js');
+const ControlHandler = require('./EventHandlers.class.js');
 
 class Game {
 
@@ -10,21 +11,17 @@ class Game {
     _scale;
     _gravity;
     _framerate;
-    _b2dcanvas;
-    _b2dctx;
     _itemList = [];
     _destroyList = [];
     _controlHandler = [];
     _interval;
 
-    constructor(height, width, scale, gravityX, gravityY, framerate, canvasName){
+    constructor(height, width, scale, gravityX, gravityY, framerate){
         this._height = height;
         this._width = width;
         this._scale = scale;
         this._gravity = new b2Vec2(gravityX, gravityY);
         this._framerate = framerate;
-        // this._b2dcanvas = document.getElementById(canvasName);
-        // this._b2dctx = this.b2dcanvas.getContext('2d');
         this._world = new b2World(this.gravity, true);
     }
 
