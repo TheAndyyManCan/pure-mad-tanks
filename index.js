@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const PureMadTanks = require('./public/js/PureMadTanks.class.js');
+const PureMadTanks = require('./js/PureMadTanks.class.js');
 
 app.use(express.static('public'));
 app.use('/js', express.static(__dirname + '/public/js'));
