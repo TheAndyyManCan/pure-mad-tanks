@@ -4,6 +4,7 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const PureMadTanks = require('./js/PureMadTanks.class.js');
+const Player = require('./js/Player.class');
 
 let connections = [];
 
@@ -17,7 +18,14 @@ game.init();
 
 http.listen(8000, function(){
     console.log('server up on *:8000');
-    io.on('connection', function(socket){
+    io.on('connection', (socket) => {
         connections.push(socket);
+        let player = new Player(socket.id);
+        game.addPlayer(player);
+
+        socket.on('disconnect', () => {
+            game.removePlayer(socket.id);
+        });
+
     });
 });

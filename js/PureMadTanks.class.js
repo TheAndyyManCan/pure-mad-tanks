@@ -9,20 +9,26 @@ class PureMadTanks extends Game {
     #rightBorder;
     #leftBorder;
     #bottomBorder;
+    #players = [];
 
     constructor(height, width, scale, gravityX, gravityY, framerate, io){
         super(height, width, scale, gravityX, gravityY, framerate, io);
     }
 
     init = () => {
-        this._spawnAllObjects();
+        this.#spawnAllObjects();
         this._interval = setInterval(() => {
             this.update();
         }, 1000/this._framerate);
     };
 
     _gameLogic = () => {
-
+        for(let i in this.#players){
+            if(!this.#players[i].tankSpawned){
+                new DynamicWorldObject(1.0, 0.5, 0.05, Math.random() * 2000, Math.random() * 2000, 200, 200, 'tank', this.#players[i].id + 'tank', this._scale, this._world, 'tank');
+                this.#players[i].tankSpawned = true;
+            }
+        }
     };
 
     _destroyListLogic = () => {
@@ -32,11 +38,12 @@ class PureMadTanks extends Game {
         this._destroyList.length = 0;
     };
 
-    _spawnAllObjects = () => {
+    #spawnAllObjects = () => {
         this.#topBorder = new StaticWorldObject(1.0, 0.5, 0.05, (this._width / 2), 0, this._width, 10, 'hBorder', 'topBorder', 0, this._scale, this._world, 'hBorder');
         this.#bottomBorder = new StaticWorldObject(1.0, 0.5, 0.05, (this._width / 2), this._height, this._width, 10, 'hBorder', 'bottomBorder', 0, this._scale, this._world, 'hBorder');
         this.#rightBorder = new StaticWorldObject(1.0, 0.5, 0.05, this._width, (this._height / 2), 10, this._height, 'vBorder', 'rightBorder', 0, this._scale, this._world, 'vBorder');
         this.#leftBorder = new StaticWorldObject(1.0, 0.5, 0.05, 0, (this._height / 2), 10, this._height, 'vBorder', 'leftBorder', 0, this._scale, this._world, 'vBorder');
+
     };
 
     _drawDomObjects = () => {
@@ -64,6 +71,18 @@ class PureMadTanks extends Game {
 
         return ret;
     };
+
+    addPlayer(player){
+        this.#players.push(player);
+    }
+
+    removePlayer(id){
+        for(let i in this.#players){
+            if(id == this.#players[i].id){
+                this.#players.splice(i);
+            }
+        }
+    }
 
 }
 

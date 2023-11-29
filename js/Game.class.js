@@ -24,7 +24,7 @@ class Game {
         this._scale = scale;
         this._gravity = new b2Vec2(gravityX, gravityY);
         this._framerate = framerate;
-        this._world = new b2World(this.gravity, true);
+        this._world = new b2World(this._gravity, true);
         this._contactListener = contactListener;
         this._io = io;
     }

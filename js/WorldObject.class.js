@@ -56,21 +56,35 @@ class StaticWorldObject extends WorldObject {
 }
 
 class DynamicWorldObject extends WorldObject {
-    constructor(density, friction, restitution, x, y, width, height, objid, uniqueName, SCALE, world){
+    constructor(density, friction, restitution, x, y, width, height, objid, uniqueName, SCALE, world, assetID){
         super(density, friction, restitution, x, y, SCALE, world);
         this._bodyDef.type = b2Body.b2_dynamicBody;
         this._fixDef.shape = new b2PolygonShape;
         this._fixDef.shape.SetAsBox(width / SCALE, height / SCALE);
-        this._createObj(world, objid, uniqueName);
+        this._userDataFields = [
+            {field: 'id', value: objid},
+            {field: 'uniqueName', value: uniqueName},
+            {field: 'width', value: width},
+            {field: 'height', value: height},
+            {field: 'assetID', value: assetID}
+        ];
+        this._createObj(world, this._userDataFields);
     }
 }
 
 class CircleWorldObject extends WorldObject {
-    constructor(density, friction, restitution, x, y, objid, uniqueName, radius, SCALE, world){
+    constructor(density, friction, restitution, x, y, objid, uniqueName, radius, SCALE, world, assetID){
         super(density, friction, restitution, x, y, SCALE, world);
         this._bodyDef.type = b2Body.b2_dynamicBody;
         this._fixDef.shape = new b2CircleShape(radius / SCALE);
-        this._createObj(world, objid, uniqueName);
+        this._userDataFields = [
+            {field: 'id', value: objid},
+            {field: 'uniqueName', value: uniqueName},
+            {field: 'width', value: width},
+            {field: 'height', value: height},
+            {field: 'assetID', value: assetID}
+        ];
+        this._createObj(world, this._userDataFields);
     }
 }
 
