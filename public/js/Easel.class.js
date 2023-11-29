@@ -28,10 +28,12 @@ class Easel {
     }
 
     _handleComplete = () => {
+        let background = this._makeBitmap(this._loader.getResult('background'), this._stageWidth, this._stageHeight);
+        this._addToStage(background);
         createjs.Ticker.framerate = this._framerate;
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.addEventListener('tick', this._tick);
-    }
+    };
 
     _tick = (e) => {
         const now = performance.now();
@@ -55,8 +57,8 @@ class Easel {
             this._framerate = 240;
         }
         createjs.Ticker.framerate = this._framerate;
-        stage.update(e);
-    }
+        this._stage.update(e);
+    };
 
     _makeBitmap = (loaderimage, b2x, b2y) => {
         let image = new createjs.Bitmap(loaderimage);
@@ -68,6 +70,23 @@ class Easel {
         image.regY = image.image.height / 2;
         image.snapToPixel = true;
         return image;
-    }
+    };
 
+    _addToStage = (bitmap, x, y) => {
+        let graphic = bitmap;
+        graphic.x = x;
+        graphic.y = y;
+        this._stage.addChild(graphic);
+    };
+
+    drawB2DGraphics = (data) => {
+        for(let i in data){
+            let image = this._makeBitmap(
+                this._loader.getResult(data[i].assetID),
+                data[i].width,
+                data[i].height
+            );
+            this._addToStage(image, data[i].x, data[i].y);
+        }
+    };
 }

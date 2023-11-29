@@ -18,17 +18,18 @@ class WorldObject {
         this._bodyDef.position.y = y / SCALE;
     }
 
-    _createObj(world, objid, uniqueName){
+    _createObj(world, userDataFields){
         this._b2dobj = world.CreateBody(this._bodyDef).CreateFixture(this._fixDef);
-        this.changeUserData("id", objid);
-        this.changeUserData("uniqueName", uniqueName);
+        for(let i in userDataFields){
+            this.changeUserData(userDataFields[i].field, userDataFields[i].value);
+        }
     }
 
     changeUserData(property, newValue){
         let objdata = this.getBody().GetUserData();
         this._userData = typeof objdata === undefined || objdata === null?{}:this._userData;
         this._userData[property] = newValue;
-        this.getBody().SetUserData(this.userData);
+        this.getBody().SetUserData(this._userData);
     }
 
     getBody(){
@@ -37,13 +38,20 @@ class WorldObject {
 }
 
 class StaticWorldObject extends WorldObject {
-    constructor(density, friction, restitution, x, y, width, height, objid, uniqueName, angle, SCALE, world){
+    constructor(density, friction, restitution, x, y, width, height, objid, uniqueName, angle, SCALE, world, assetID){
         super(density, friction, restitution, x, y, SCALE, world);
         this._bodyDef.type = b2Body.b2_staticBody;
         this._bodyDef.angle = angle;
         this._fixDef.shape = new b2PolygonShape;
         this._fixDef.shape.SetAsBox(width / SCALE, height / SCALE);
-        this._createObj(world, objid, uniqueName);
+        this._userDataFields = [
+            {field: 'id', value: objid},
+            {field: 'uniqueName', value: uniqueName},
+            {field: 'width', value: width},
+            {field: 'height', value: height},
+            {field: 'assetID', value: assetID}
+        ];
+        this._createObj(world, this._userDataFields);
     }
 }
 
