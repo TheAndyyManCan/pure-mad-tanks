@@ -1,7 +1,4 @@
 'use strict';
-/**
- * Mouse controls
- */
 
 class ControlHandler {
     constructor(target, type, runfunc){

@@ -12,4 +12,36 @@ let easel = new Easel('easelCan', manifest, 60);
 
 socket.on('objdata', function(data){
     easel.drawB2DGraphics(data);
+});
+
+socket.on('nicknameConfirm', () => {
+    $('loginScreen').css('display', 'hidden');
+    $('waitScreen').css('display', 'flex');
 })
+
+socket.on('playersReady', () => {
+    $('waitScreen').css('display', 'hidden');
+    $('easelCan').css('display', 'block');
+})
+
+$('#nicknameForm').submit( (e) => {
+    e.preventDefault();
+    if($('#nicknameInput').val()){
+        socket.emit('nicknameEnter', $('nicknameInput').val());
+    }
+});
+
+/**
+ * Control listeners
+ */
+$(document).keydown( (e) => {
+    socket.emit('keydown', e);
+});
+
+$(document).keyup( (e) => {
+    socket.emit('keyup', e);
+});
+
+$('#easelCan').mousedown( (e) => {
+    socket.emit('mousedown', e)
+});

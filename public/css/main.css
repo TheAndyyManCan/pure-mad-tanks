@@ -1,0 +1,20 @@
+#easelCan {
+    display: none;
+}
+
+#loginScreen, #waitScreen {
+    height: 800px;
+    width: 800px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nicknameInput {
+    background-color: black;
+    border-style: none none solid none;
+    border-color: white;
+    color: white;
+    text-align: center;
+}

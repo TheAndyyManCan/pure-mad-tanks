@@ -14,7 +14,6 @@ app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/assets', express.static(__dirname + '/public/assets'));
 
 let game = new PureMadTanks(2000, 2000, 30, 0, 0, 60, io);
-game.init();
 
 http.listen(8000, function(){
     console.log('server up on *:8000');
@@ -25,6 +24,17 @@ http.listen(8000, function(){
 
         socket.on('disconnect', () => {
             game.removePlayer(socket.id);
+        });
+
+        socket.on('nicknameEnter', (nickname) => {
+            player.setNickname(socket.id, nickname);
+            player.setPlayerState(socket.id, 'ready');
+            socket.emit('nicknameConfirm');
+            if(game.checkPlayerStatus){
+                socket.emit('playersReady');
+                game.init();
+                game.setPause(false);
+            }
         });
 
     });

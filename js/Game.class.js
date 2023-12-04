@@ -17,6 +17,7 @@ class Game {
     _interval;
     _contactListener;
     _io;
+    _pause;
 
     constructor(height, width, scale, gravityX, gravityY, framerate, io){
         this._height = height;
@@ -27,20 +28,25 @@ class Game {
         this._world = new b2World(this._gravity, true);
         this._contactListener = contactListener;
         this._io = io;
+        this._pause = true;
     }
 
-    update = () => {
-        this._world.Step(
-            1 / this._framerate, // framerate
-            10, // velocity iterations
-            10 // position iterations
-        );
+    setPause(pause){this._pause = pause;}
 
-        this._gameLogic();
-        this._world.DrawDebugData();
-        this._world.ClearForces();
-        this._destroyListLogic();
-        this._io.sockets.emit('objdata', this._drawDomObjects());
+    update = () => {
+        if(!this._pause){
+            this._world.Step(
+                1 / this._framerate, // framerate
+                10, // velocity iterations
+                10 // position iterations
+            );
+
+            this._gameLogic();
+            this._world.DrawDebugData();
+            this._world.ClearForces();
+            this._destroyListLogic();
+            this._io.sockets.emit('objdata', this._drawDomObjects());
+        }
     };
 
     _gameLogic = () => {
