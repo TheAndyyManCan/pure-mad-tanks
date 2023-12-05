@@ -7,6 +7,7 @@ class PureMadTanks extends Game {
 
     #borders = [];
     #players = [];
+    #walls = [];
 
     constructor(height, width, scale, gravityX, gravityY, framerate, io){
         super(height, width, scale, gravityX, gravityY, framerate, io);
@@ -36,12 +37,16 @@ class PureMadTanks extends Game {
         this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, this._width, (this._height / 2), 10, this._height, 'vBorder', 'rightBorder', 0, this._scale, this._world, 'vBorder'));
         this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, 0, (this._height / 2), 10, this._height, 'vBorder', 'leftBorder', 0, this._scale, this._world, 'vBorder'));
 
+        this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, (this._width / 2), (this._height * 0.375), (this._width / 8) + 10, 10, 'hBorder', 'innerTopBorder', 0, this._scale, this._world, 'hBorder'));
+        this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, (this._width / 2), (this._height * 0.625), (this._width / 8) + 10, 10, 'hBorder', 'innerBottomBorder', 0, this._scale, this._world, 'hBorder'));
+        this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, (this._width * 0.375), (this._height / 2), 10, (this._height / 8) + 10, 'vBorder', 'innerLeftBorder', 0, this._scale, this._world, 'vBorder'));
+        this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, (this._width * 0.625), (this._height / 2), 10, (this._height / 8) + 10, 'vBorder', 'innerRightBorder', 0, this._scale, this._world, 'vBorder'));
+
         // Spawn a tank for each player
         for(let i in this.#players){
-            if(!this.#players[i].tankSpawned){
-                new DynamicWorldObject(1.0, 0.5, 0.05, Math.random() * 2000, Math.random() * 2000, 200, 200, 'tank', this.#players[i].id + 'tank', this._scale, this._world, 'tank');
-                this.#players[i].tankSpawned = true;
-            }
+            let x = (Math.random() * (this._width / this.#players.length)) + ((i % 2) * (this._width / this.#players.length));
+            let y = (Math.random() * (this._height / this.#players.length)) + ((i % 2) * (this._height / this.#players.length));
+            this.#players[i].spawnTank(x, y, this._scale, this._world);
         }
 
     };
@@ -85,7 +90,6 @@ class PureMadTanks extends Game {
     };
 
     checkPlayerStatus = () => {
-        console.log('Players: ' + this.#players.length);
         let playerReady = 0;
         if(this.#players.length > 1){
             for(let i in this.#players){
