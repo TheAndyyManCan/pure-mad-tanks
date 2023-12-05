@@ -15,19 +15,19 @@ socket.on('objdata', function(data){
 });
 
 socket.on('nicknameConfirm', () => {
-    $('loginScreen').css('display', 'hidden');
-    $('waitScreen').css('display', 'flex');
+    $('#loginScreen').css('display', 'none');
+    $('#waitScreen').css('display', 'flex');
 })
 
 socket.on('playersReady', () => {
-    $('waitScreen').css('display', 'hidden');
-    $('easelCan').css('display', 'block');
+    $('#waitScreen').css('display', 'none');
+    $('#easelCan').css('display', 'block');
 })
 
 $('#nicknameForm').submit( (e) => {
     e.preventDefault();
     if($('#nicknameInput').val()){
-        socket.emit('nicknameEnter', $('nicknameInput').val());
+        socket.emit('nicknameEnter', $('#nicknameInput').val());
     }
 });
 

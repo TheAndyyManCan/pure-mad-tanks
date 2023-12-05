@@ -1,5 +1,7 @@
 'use strict';
 
+const R2D = 180/Math.PI;
+
 class Easel {
 
     _easelCan;
@@ -13,6 +15,7 @@ class Easel {
     _datastamps;
     _objects = [];
     _manifest;
+    _initialised;
 
     constructor(canvasName, manifest, framerate){
         this._easelCan = document.getElementById(canvasName);
@@ -25,6 +28,7 @@ class Easel {
         this._loader.addEventListener('complete', this._handleComplete);
         this._loader.loadManifest(this._manifest, true);
         this._framerate = framerate;
+        this._inititialised = false;
     }
 
     _handleComplete = () => {
@@ -80,13 +84,45 @@ class Easel {
     };
 
     drawB2DGraphics = (data) => {
-        for(let i in data){
-            let image = this._makeBitmap(
-                this._loader.getResult(data[i].assetID),
-                data[i].width,
-                data[i].height
-            );
-            this._addToStage(image, data[i].x, data[i].y);
+        if(!this._initialised){
+            for(let i in data){
+                this._objects.push({
+                    image: this._makeBitmap(
+                        this._loader.getResult(data[i].assetID),
+                        data[i].width,
+                        data[i].height
+                    ),
+                    id: data[i].id
+                });
+                this._addToStage(this._objects[this._objects.length - 1].image, data[i].x, data[i].y);
+            }
+            this._initialised = true;
+        } else {
+            let index = -1;
+            for(let i in data){
+                for(let j in this._objects){
+                    if(data[i].id = this._objects[i].id){
+                        index = j;
+                    }
+                }
+                if(index >= 0){
+                    // Object already exists, update the stage
+                    this._objects[index].image.x = data[i].x;
+                    this._objects[index].image.y = data[i].y;
+                    this._objects[index].image.rotation = data[i].r * R2D;
+                } else {
+                    // Object does not exist, create new object and add to the stage
+                    this._objects.push({
+                        image: this._makeBitmap(
+                            this._loader.getResult(data[i].assetID),
+                            data[i].width,
+                            data[i].height
+                        ),
+                        id: data[i].id
+                    });
+                    this._addToStage(this._objects[this._objects.length - 1].image, data[i].x, data[i].y);
+                }
+            }
         }
     };
 }

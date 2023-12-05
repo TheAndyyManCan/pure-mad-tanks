@@ -30,8 +30,10 @@ http.listen(8000, function(){
             player.setNickname(socket.id, nickname);
             player.setPlayerState(socket.id, 'ready');
             socket.emit('nicknameConfirm');
-            if(game.checkPlayerStatus){
-                socket.emit('playersReady');
+            if(game.checkPlayerStatus()){
+                for(let i in connections){
+                    connections[i].emit('playersReady');
+                }
                 game.init();
                 game.setPause(false);
             }
