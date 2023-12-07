@@ -84,7 +84,7 @@ class PureMadTanks extends Game {
     removePlayer = (id) => {
         for(let i in this.#players){
             if(id == this.#players[i].id){
-                this.#players.splice(i);
+                this.#players.splice(i, 1);
             }
         }
     };
