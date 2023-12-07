@@ -35,8 +35,26 @@ http.listen(8000, function(){
                     connections[i].emit('playersReady');
                 }
                 game.init();
-                game.setPause(false);
+                game.pause = false;
             }
+        });
+
+        socket.on('keydown', (e) => {
+            if(!game.pause){
+                player.moveTank(e);
+            }
+        });
+
+        socket.on('keyup', (e) => {
+            // Handle key up in PureMadTanks class
+        });
+
+        socket.on('mousedown', (e) => {
+            // Handle mouse press
+        });
+
+        socket.on('mousemove', (e) => {
+            // Handle mouse move
         });
 
     });

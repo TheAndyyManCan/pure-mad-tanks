@@ -35,7 +35,7 @@ $('#nicknameForm').submit( (e) => {
  * Control listeners
  */
 $(document).keydown( (e) => {
-    socket.emit('keydown', e);
+    socket.emit('keydown', e.keyCode);
 });
 
 $(document).keyup( (e) => {
@@ -44,4 +44,8 @@ $(document).keyup( (e) => {
 
 $('#easelCan').mousedown( (e) => {
     socket.emit('mousedown', e)
+});
+
+$('#easelCan').mousemove( (e) => {
+    socket.emit('mousemove', e);
 });

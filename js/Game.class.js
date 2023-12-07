@@ -17,7 +17,7 @@ class Game {
     _interval;
     _contactListener;
     _io;
-    _pause;
+    pause;
 
     constructor(height, width, scale, gravityX, gravityY, framerate, io){
         this._height = height;
@@ -28,13 +28,11 @@ class Game {
         this._world = new b2World(this._gravity, true);
         this._contactListener = contactListener;
         this._io = io;
-        this._pause = true;
+        this.pause = true;
     }
 
-    setPause(pause){this._pause = pause;}
-
     update = () => {
-        if(!this._pause){
+        if(!this.pause){
             this._world.Step(
                 1 / this._framerate, // framerate
                 10, // velocity iterations

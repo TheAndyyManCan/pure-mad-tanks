@@ -93,11 +93,14 @@ class PureMadTanks extends Game {
         let playerReady = 0;
         if(this.#players.length > 1){
             for(let i in this.#players){
+                console.log(this.#players[i].playerState);
                 if(this.#players[i].playerState == 'ready'){
                     playerReady++;
                 }
             }
         }
+        console.log('players ready: ' + playerReady);
+        console.log('players length: ' + this.#players.length);
         return playerReady == this.#players.length;
     }
 
