@@ -40,6 +40,7 @@ http.listen(8000, function(){
         });
 
         socket.on('keydown', (e) => {
+            console.log(socket.id);
             if(!game.pause){
                 player.moveTank(e);
             }

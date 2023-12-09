@@ -101,7 +101,7 @@ class Easel {
             let index = -1;
             for(let i in data){
                 for(let j in this._objects){
-                    if(data[i].id == this._objects[i].id){
+                    if(data[i].id == this._objects[j].id){
                         index = j;
                     }
                 }

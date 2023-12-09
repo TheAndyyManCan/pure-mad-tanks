@@ -33,10 +33,11 @@ class Player {
     }
 
     spawnTank = (x, y, scale, world) => {
-        this.#tank = new DynamicWorldObject(1.0, 0.5, 0.05, x, y, 200, 200, 'tank', this.#nickname + 'tank', scale, world, 'tank');
+        this.#tank = new DynamicWorldObject(1.0, 0.5, 0.05, x, y, 200, 200, this.#id + 'tank', this.#id + 'tank', scale, world, 'tank');
     };
 
     moveTank = (e) => {
+        console.log(this.#tank.getBody().GetUserData());
         let x = 0;
         let y = 0;
 
@@ -55,15 +56,12 @@ class Player {
                 break;
         }
 
-        // Log the applied impulses to check if they are correct
-        console.log('Applied Impulse:', { x, y });
-
         // Apply the impulse to the tank body
         this.#tank.getBody().ApplyImpulse(new b2Vec2(x, y), this.#tank.getBody().GetWorldCenter());
 
         // Clamp the tank's velocity if necessary
-        const maxVelocity = 5;
-        const currentVelocity = this.#tank.getBody().GetLinearVelocity();
+        let maxVelocity = 5;
+        let currentVelocity = this.#tank.getBody().GetLinearVelocity();
         if (currentVelocity.Length() > maxVelocity) {
             this.#tank.getBody().SetLinearVelocity(currentVelocity.Normalize().SelfMultiply(maxVelocity));
         }
