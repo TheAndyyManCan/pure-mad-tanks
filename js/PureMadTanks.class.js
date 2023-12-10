@@ -21,6 +21,9 @@ class PureMadTanks extends Game {
     };
 
     _gameLogic = () => {
+        for(let i in this.#players){
+            this.#players[i].tank.decelerateTank();
+        }
     };
 
     _destroyListLogic = () => {

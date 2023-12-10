@@ -40,7 +40,30 @@ class Tank extends DynamicWorldObject {
             let y = currentVelocity.y * maxVelocity;
             this.getBody().SetLinearVelocity(new b2Vec2(x, y));
         }
-        console.log(this.getBody().GetLinearVelocity());
+    };
+
+    decelerateTank = () => {
+        var x, y;
+        var currentX = this.getBody().GetLinearVelocity().x;
+        var currentY = this.getBody().GetLinearVelocity().y;
+
+        if((currentX < 0.025 && currentX > 0) || (currentX > -0.025 && currentX < 0)){
+            x = 0;
+        } else if(currentX > 0){
+            x = currentX - 0.025;
+        } else if(currentX < 0){
+            x = currentX + 0.025;
+        }
+
+        if((currentY < 0.025 && currentY > 0) || (currentY > -0.025 && currentY < 0)){
+            y = 0;
+        } else if(currentY > 0){
+            y = currentY - 0.025;
+        } else if(currentY < 0){
+            y = currentY + 0.025;
+        }
+
+        this.getBody().SetLinearVelocity(new b2Vec2(x, y));
     }
 }
  module.exports = Tank;
