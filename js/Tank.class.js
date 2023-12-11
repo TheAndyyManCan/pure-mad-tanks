@@ -43,9 +43,9 @@ class Tank extends DynamicWorldObject {
     };
 
     decelerateTank = () => {
-        var x, y;
-        var currentX = this.getBody().GetLinearVelocity().x;
-        var currentY = this.getBody().GetLinearVelocity().y;
+        let x, y;
+        let currentX = this.getBody().GetLinearVelocity().x;
+        let currentY = this.getBody().GetLinearVelocity().y;
 
         if((currentX < 0.025 && currentX > 0) || (currentX > -0.025 && currentX < 0)){
             x = 0;

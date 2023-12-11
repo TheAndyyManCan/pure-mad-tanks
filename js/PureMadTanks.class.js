@@ -102,8 +102,6 @@ class PureMadTanks extends Game {
                 }
             }
         }
-        console.log('players ready: ' + playerReady);
-        console.log('players length: ' + this.#players.length);
         return playerReady == this.#players.length;
     }
 
