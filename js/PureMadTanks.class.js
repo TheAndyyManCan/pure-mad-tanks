@@ -47,8 +47,14 @@ class PureMadTanks extends Game {
 
         // Spawn a tank for each player
         for(let i in this.#players){
-            let x = (Math.random() * (this._width / this.#players.length)) + ((i % 2) * (this._width / this.#players.length));
-            let y = (Math.random() * (this._height / this.#players.length)) + ((i % 2) * (this._height / this.#players.length));
+            let x = (Math.random() * this._width);
+            let y = (Math.random() * this._height);
+            // Check that tank isn't spawning in the middle square
+            // TODO: Add logic for not spawning on same pixel as destructible walls
+            while ((x > this._width * 0.375 && x < this._width * 0.625) && (y > this._height * 0.375 && y < this._height * 0.625)){
+                x = (Math.random() * this._width);
+                y = (Math.random() + this._height);
+            }
             this.#players[i].spawnTank(x, y, this._scale, this._world);
         }
 

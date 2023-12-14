@@ -4,9 +4,10 @@ const { DynamicWorldObject } = require("./WorldObject.class");
 const { b2Vec2 } = require("./defs");
 
 class Tank extends DynamicWorldObject {
-    
+
     constructor(density, friction, restitution, x, y, width, height, objid, uniquename, SCALE, world, assetID){
         super(density, friction, restitution, x, y, width, height, objid, uniquename, SCALE, world, assetID);
+        this.changeUserData('health', 100);
     }
 
     moveTank = (keycode) => {
