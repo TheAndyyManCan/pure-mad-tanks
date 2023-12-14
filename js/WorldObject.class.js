@@ -48,7 +48,7 @@ class WorldObject {
 
 class StaticWorldObject extends WorldObject {
     constructor(density, friction, restitution, x, y, width, height, objid, uniqueName, angle, SCALE, world, assetID){
-        super(density, friction, restitution, x, y, SCALE, world, objid, uniqueName, width, height, assetID);
+        super(density, friction, restitution, x, y, SCALE, objid, uniqueName, width, height, assetID);
         this._bodyDef.type = b2Body.b2_staticBody;
         this._bodyDef.angle = angle;
         this._fixDef.shape = new b2PolygonShape;
@@ -59,7 +59,7 @@ class StaticWorldObject extends WorldObject {
 
 class DynamicWorldObject extends WorldObject {
     constructor(density, friction, restitution, x, y, width, height, objid, uniqueName, SCALE, world, assetID){
-        super(density, friction, restitution, x, y, SCALE, world, objid, uniqueName, width, height, assetID);
+        super(density, friction, restitution, x, y, SCALE, objid, uniqueName, width, height, assetID);
         this._bodyDef.type = b2Body.b2_dynamicBody;
         this._fixDef.shape = new b2PolygonShape;
         this._fixDef.shape.SetAsBox(width / SCALE, height / SCALE);
@@ -69,7 +69,7 @@ class DynamicWorldObject extends WorldObject {
 
 class CircleWorldObject extends WorldObject {
     constructor(density, friction, restitution, x, y, objid, uniqueName, radius, SCALE, world, assetID){
-        super(density, friction, restitution, x, y, SCALE, world, objid, uniqueName, radius*this._r2d, radius*this._r2d, assetID);
+        super(density, friction, restitution, x, y, SCALE, objid, uniqueName, radius*this._r2d, radius*this._r2d, assetID);
         this._bodyDef.type = b2Body.b2_dynamicBody;
         this._fixDef.shape = new b2CircleShape(radius / SCALE);
         this._createObj(world, this._userDataFields);

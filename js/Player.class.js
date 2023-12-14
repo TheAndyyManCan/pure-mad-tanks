@@ -32,7 +32,7 @@ class Player {
     }
 
     spawnTank = (x, y, scale, world) => {
-        this.#tank = new Tank(1.0, 0.5, 0.05, x, y, 100, 100, this.#id + 'tank', this.#id + 'tank', scale, world, 'tank');
+        this.#tank = new Tank(1.0, 0.5, 0.05, x, y, 100, 100, 'tank', this.#id + 'tank', scale, world, 'tank', this.#id);
     };
 
     moveTank = (keycode) => {

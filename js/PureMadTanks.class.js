@@ -53,7 +53,7 @@ class PureMadTanks extends Game {
             // TODO: Add logic for not spawning on same pixel as destructible walls
             while ((x > this._width * 0.375 && x < this._width * 0.625) && (y > this._height * 0.375 && y < this._height * 0.625)){
                 x = (Math.random() * this._width);
-                y = (Math.random() + this._height);
+                y = (Math.random() * this._height);
             }
             this.#players[i].spawnTank(x, y, this._scale, this._world);
         }
@@ -64,7 +64,7 @@ class PureMadTanks extends Game {
         let ret = [];
         for(let i = this._world.GetBodyList(); i; i = i.GetNext()){
             for(let j = i.GetFixtureList(); j; j = j.GetNext()){
-                let id = j.GetBody().GetUserData().id;
+                let id = j.GetBody().GetUserData().uniqueName;
                 let width = j.GetBody().GetUserData().width;
                 let height = j.GetBody().GetUserData().height;
                 let x = j.GetBody().GetPosition().x * this._scale;

@@ -39,7 +39,7 @@ $(document).keydown( (e) => {
 });
 
 $(document).keyup( (e) => {
-    socket.emit('keyup', e);
+    socket.emit('keyup', e.keycode);
 });
 
 $('#easelCan').mousedown( (e) => {
