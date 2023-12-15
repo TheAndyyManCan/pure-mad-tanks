@@ -12,35 +12,19 @@ class Tank extends DynamicWorldObject {
     }
 
     moveTank = (keycode) => {
-        let x = 0;
-        let y = 0;
-
         switch (keycode) {
             case 65:
-                x = -5;
+                this.#changeRotation(false);
                 break;
             case 68:
-                x = 5;
+                this.#changeRotation(true);
                 break;
             case 87:
-                y = -5;
+                this.#changeTankSpeed(true);
                 break;
             case 83:
-                y = 5;
+                this.#changeTankSpeed(false);
                 break;
-        }
-
-        // Apply the impulse to the tank body
-        this.getBody().ApplyImpulse(new b2Vec2(x, y), this.getBody().GetWorldCenter());
-
-        // Clamp the tank's velocity if necessary
-        let maxVelocity = 2.5;
-        let currentVelocity = this.getBody().GetLinearVelocity();
-        if (currentVelocity.Length() > maxVelocity) {
-            currentVelocity.Normalize();
-            let x = currentVelocity.x * maxVelocity;
-            let y = currentVelocity.y * maxVelocity;
-            this.getBody().SetLinearVelocity(new b2Vec2(x, y));
         }
     };
 
@@ -66,6 +50,43 @@ class Tank extends DynamicWorldObject {
         }
 
         this.getBody().SetLinearVelocity(new b2Vec2(x, y));
+    }
+
+    #changeTankSpeed = (forward) => {
+
+        let impulseForce;
+
+        if(forward){
+            impulseForce = 5;
+        } else {
+            impulseForce = -5;
+        }
+
+        let angle = this.getBody().GetAngle();
+        let x = impulseForce * Math.cos(angle);
+        let y = impulseForce * Math.sin(angle);
+
+        // Apply the impulse to the tank body
+        this.getBody().ApplyImpulse(new b2Vec2(x, y), this.getBody().GetWorldCenter());
+
+        // Clamp the tank's velocity if necessary
+        let maxVelocity = 2.5;
+        let currentVelocity = this.getBody().GetLinearVelocity();
+        if (currentVelocity.Length() > maxVelocity) {
+            currentVelocity.Normalize();
+            let vx = currentVelocity.x * maxVelocity;
+            let vy = currentVelocity.y * maxVelocity;
+            this.getBody().SetLinearVelocity(new b2Vec2(vx, vy));
+        }
+    }
+
+    #changeRotation = (clockwise) => {
+        let currentRotation = this.getBody().GetAngle();
+        if(clockwise){
+            this.getBody().SetAngle(currentRotation + 1);
+        } else {
+            this.getBody().SetAngle(currentRotation - 1);
+        }
     }
 }
  module.exports = Tank;
