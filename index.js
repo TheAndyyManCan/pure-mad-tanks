@@ -16,31 +16,44 @@ app.use('/assets', express.static(__dirname + '/public/assets'));
 let game = new PureMadTanks(2000, 2000, 30, 0, 0, 60, io);
 
 http.listen(8000, function(){
+
     console.log('server up on *:8000');
+
     io.on('connection', (socket) => {
-        connections.push(socket);
+
         let player = new Player(socket.id);
-        game.addPlayer(player);
+        let isPlayer = game.addPlayer(player);
+        console.log('Players: ' + game.players.length);
+        console.log('Spectators: ' + game.spectators.length);
+        connections.push(socket);
 
         socket.on('disconnect', () => {
             game.removePlayer(socket.id);
         });
-
-        socket.on('nicknameEnter', (nickname) => {
-            player.setNickname(socket.id, nickname);
-            player.setPlayerState(socket.id, 'ready');
-            socket.emit('nicknameConfirm');
-            if(game.checkPlayerStatus()){
-                for(let i in connections){
-                    connections[i].emit('playersReady');
-                }
-                game.init();
-                game.pause = false;
+        
+        if(game.pause){
+            if(isPlayer){
+                socket.on('nicknameEnter', (nickname) => {
+                    player.setNickname(socket.id, nickname);
+                    player.setPlayerState(socket.id, 'ready');
+                    socket.emit('nicknameConfirm');
+                    if(game.checkPlayerStatus()){
+                        for(let i in connections){
+                            connections[i].emit('playersReady');
+                        }
+                        game.init();
+                        game.pause = false;
+                    }
+                });
+            } else {
+                socket.emit('spectatorWaiting');
             }
-        });
+        } else {
+            socket.emit('playersReady');
+        }
 
         socket.on('keydown', (e) => {
-            if(!game.pause){
+            if(!game.pause && isPlayer){
                 player.moveTank(e);
             }
         });

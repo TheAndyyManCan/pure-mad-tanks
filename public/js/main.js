@@ -14,15 +14,22 @@ socket.on('objdata', function(data){
     easel.drawB2DGraphics(data);
 });
 
+socket.on('spectatorWaiting', () => {
+    $('#loginScreen').css('display', 'none');
+    $('#spectatorWaitScreen').css('display', 'flex');
+});
+
 socket.on('nicknameConfirm', () => {
     $('#loginScreen').css('display', 'none');
     $('#waitScreen').css('display', 'flex');
-})
+});
 
 socket.on('playersReady', () => {
+    $('#loginScreen').css('display', 'none');
     $('#waitScreen').css('display', 'none');
+    $('#spectatorWaitScreen').css('display', 'none');
     $('#easelCan').css('display', 'block');
-})
+});
 
 $('#nicknameForm').submit( (e) => {
     e.preventDefault();

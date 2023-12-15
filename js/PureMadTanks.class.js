@@ -7,7 +7,11 @@ class PureMadTanks extends Game {
 
     #borders = [];
     #players = [];
+    #spectators = [];
     #walls = [];
+
+    get players(){return this.#players;}
+    get spectators(){return this.#spectators;}
 
     constructor(height, width, scale, gravityX, gravityY, framerate, io){
         super(height, width, scale, gravityX, gravityY, framerate, io);
@@ -87,13 +91,30 @@ class PureMadTanks extends Game {
     };
 
     addPlayer = (player) => {
-        this.#players.push(player);
+        if(this.#players.length < 2){
+            this.#players.push(player);
+            return true;
+        } else {
+            this.#spectators.push(player);
+            return false;
+        }
     };
 
     removePlayer = (id) => {
+        let found = false;
         for(let i in this.#players){
             if(id == this.#players[i].id){
                 this.#players.splice(i, 1);
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            for(let j in this.#spectators){
+                if(id == this.#spectators[j].id){
+                    this.#spectators.splice(i, 1);
+                    break;
+                }
             }
         }
     };

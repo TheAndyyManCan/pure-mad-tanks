@@ -21,6 +21,16 @@
     color: white;
 }
 
+#spectatorWaitScreen {
+    height: 800px;
+    width: 800px;
+    background-color: black;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
 #nicknameInput {
     background-color: black;
     border-style: none none solid none;
