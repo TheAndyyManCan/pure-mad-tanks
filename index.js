@@ -13,7 +13,7 @@ app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/assets', express.static(__dirname + '/public/assets'));
 
-let game = new PureMadTanks(2000, 2000, 30, 0, 0, 60, io);
+let game = new PureMadTanks(2000, 2000, 30, 0, 0, 60, io, 10);
 
 http.listen(8000, function(){
 
@@ -23,14 +23,15 @@ http.listen(8000, function(){
 
         let player = new Player(socket.id);
         let isPlayer = game.addPlayer(player);
-        console.log('Players: ' + game.players.length);
-        console.log('Spectators: ' + game.spectators.length);
         connections.push(socket);
 
         socket.on('disconnect', () => {
             game.removePlayer(socket.id);
+            if(isPlayer){
+                game.pause = true;
+            }
         });
-        
+
         if(game.pause){
             if(isPlayer){
                 socket.on('nicknameEnter', (nickname) => {

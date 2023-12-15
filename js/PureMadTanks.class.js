@@ -1,6 +1,7 @@
 'use strict';
 
 const Game = require('./Game.class.js');
+const Wall = require('./Wall.class');
 const { StaticWorldObject, DynamicWorldObject, CircleWorldObject } = require('./WorldObject.class');
 
 class PureMadTanks extends Game {
@@ -9,12 +10,11 @@ class PureMadTanks extends Game {
     #players = [];
     #spectators = [];
     #walls = [];
+    #numberOfWalls;
 
-    get players(){return this.#players;}
-    get spectators(){return this.#spectators;}
-
-    constructor(height, width, scale, gravityX, gravityY, framerate, io){
+    constructor(height, width, scale, gravityX, gravityY, framerate, io, numberOfWalls){
         super(height, width, scale, gravityX, gravityY, framerate, io);
+        this.#numberOfWalls = numberOfWalls;
     }
 
     init = () => {
@@ -48,6 +48,19 @@ class PureMadTanks extends Game {
         this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, (this._width / 2), (this._height * 0.625), (this._width / 8) + 10, 10, 'hBorder', 'innerBottomBorder', 0, this._scale, this._world, 'hBorder'));
         this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, (this._width * 0.375), (this._height / 2), 10, (this._height / 8) + 10, 'vBorder', 'innerLeftBorder', 0, this._scale, this._world, 'vBorder'));
         this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, (this._width * 0.625), (this._height / 2), 10, (this._height / 8) + 10, 'vBorder', 'innerRightBorder', 0, this._scale, this._world, 'vBorder'));
+
+        // Spawn destructible walls
+        for(let i = 0; i <= this.#numberOfWalls; i++){
+            let x = (Math.random() * this._width);
+            let y = (Math.random() * this._height);
+
+            while ((x > this._width * 0.375 && x < this._width * 0.625) && (y > this._height * 0.375 && y < this._height * 0.625)){
+                x = (Math.random() * this._width);
+                y = (Math.random() * this._height);
+            }
+
+            this.#walls.push(new Wall(1.0, 0.5, 0.05, x, y, ((Math.random() * 500) + 100), 10, 0, 'wall', 'wall' + i, this._scale, this._world, 'wall'));
+        }
 
         // Spawn a tank for each player
         for(let i in this.#players){
