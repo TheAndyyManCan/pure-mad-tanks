@@ -27,8 +27,12 @@ http.listen(8000, function(){
 
         socket.on('disconnect', () => {
             game.removePlayer(socket.id);
-            if(isPlayer){
-                game.pause = true;
+            if(isPlayer && !game.pause){
+                game.endGame();
+                game.removePlayer(socket.id);
+                for(let i in connections){
+                    connections[i].emit('endgame');
+                }
             }
         });
 

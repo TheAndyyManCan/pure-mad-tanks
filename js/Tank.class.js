@@ -83,9 +83,9 @@ class Tank extends DynamicWorldObject {
     #changeRotation = (clockwise) => {
         let currentRotation = this.getBody().GetAngle();
         if(clockwise){
-            this.getBody().SetAngle(currentRotation + 1);
+            this.getBody().SetAngle(currentRotation + 0.025);
         } else {
-            this.getBody().SetAngle(currentRotation - 1);
+            this.getBody().SetAngle(currentRotation - 0.025);
         }
     }
 }

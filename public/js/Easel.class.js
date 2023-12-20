@@ -1,7 +1,5 @@
 'use strict';
 
-const R2D = 180/Math.PI;
-
 class Easel {
 
     _easelCan;
@@ -72,7 +70,6 @@ class Easel {
         image.scaleY = scaley;
         image.regX = image.image.width / 2;
         image.regY = image.image.height / 2;
-        image.snapToPixel = true;
         return image;
     };
 
@@ -109,7 +106,7 @@ class Easel {
                     // Object already exists, update the stage
                     this._objects[index].image.x = data[i].x;
                     this._objects[index].image.y = data[i].y;
-                    this._objects[index].image.rotation = data[i].r * R2D;
+                    this._objects[index].image.rotation = data[i].r;
                 } else {
                     // Object does not exist, create new object and add to the stage
                     this._objects.push({

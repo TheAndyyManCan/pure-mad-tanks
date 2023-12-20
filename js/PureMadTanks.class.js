@@ -32,7 +32,7 @@ class PureMadTanks extends Game {
 
     _destroyListLogic = () => {
         for(let i in this._destroyList){
-            this.world.DestroyBody(this._destroyList[i]);
+            this._world.DestroyBody(this._destroyList[i]);
         }
         this._destroyList.length = 0;
     };
@@ -50,16 +50,25 @@ class PureMadTanks extends Game {
         this.#borders.push(new StaticWorldObject(1.0, 0.5, 0.05, (this._width * 0.625), (this._height / 2), 10, (this._height / 8) + 10, 'vBorder', 'innerRightBorder', 0, this._scale, this._world, 'vBorder'));
 
         // Spawn destructible walls
-        for(let i = 0; i <= this.#numberOfWalls; i++){
+        for(let i = 0; i < this.#numberOfWalls; i++){
+
+            let chance = Math.random();
+            let angle = 0;
             let x = (Math.random() * this._width);
             let y = (Math.random() * this._height);
+
+            // 50% chance to vertical or horizontal
+            if(chance > 0.5){
+                angle = 1.571; // 180 degrees in radians
+            }
 
             while ((x > this._width * 0.375 && x < this._width * 0.625) && (y > this._height * 0.375 && y < this._height * 0.625)){
                 x = (Math.random() * this._width);
                 y = (Math.random() * this._height);
             }
 
-            this.#walls.push(new Wall(1.0, 0.5, 0.05, x, y, ((Math.random() * 500) + 100), 10, 0, 'wall', 'wall' + i, this._scale, this._world, 'wall'));
+            this.#walls.push(new Wall(1.0, 0.5, 0.05, x, y, ((Math.random() * 500) + 100), 10, angle, 'wall', 'wall' + i, this._scale, this._world, 'wall'));
+
         }
 
         // Spawn a tank for each player
@@ -77,6 +86,18 @@ class PureMadTanks extends Game {
 
     };
 
+    #destroyAllObjects = () => {
+        for(let i in this.#borders){
+            this._destroyList.push(this.#borders[i].getBody());
+        }
+        for(let i in this.#walls){
+            this._destroyList.push(this.#walls[i].getBody());
+        }
+        for(let i in this.#players){
+            this._destroyList.push(this.#players[i].tank.getBody());
+        }
+    }
+
     _drawDomObjects = () => {
         let ret = [];
         for(let i = this._world.GetBodyList(); i; i = i.GetNext()){
@@ -86,7 +107,7 @@ class PureMadTanks extends Game {
                 let height = j.GetBody().GetUserData().height;
                 let x = j.GetBody().GetPosition().x * this._scale;
                 let y = j.GetBody().GetPosition().y * this._scale;
-                let r = j.GetBody().GetAngle();
+                let r = j.GetBody().GetAngle() * (180/Math.PI);
                 let assetID = j.GetBody().GetUserData().assetID;
                 ret.push({
                     id: id,
@@ -144,6 +165,12 @@ class PureMadTanks extends Game {
         }
         return playerReady == this.#players.length;
     }
+
+    endGame = () => {
+        this.#destroyAllObjects();
+        this.pause = true;
+    }
+
 
 }
 

@@ -32,7 +32,12 @@ socket.on('playersReady', () => {
     $('#easelCan').css('display', 'block');
 });
 
-$('#nicknameForm').submit( (e) => {
+socket.on('endgame', () => {
+    $('#easelCan').css('display', 'none');
+    $('#loginScreen').css('display', 'none');
+});
+
+$('#nicknameForm').submit((e) => {
     e.preventDefault();
     if($('#nicknameInput').val()){
         socket.emit('nicknameEnter', $('#nicknameInput').val());
@@ -42,18 +47,18 @@ $('#nicknameForm').submit( (e) => {
 /**
  * Control listeners
  */
-$(document).keydown( (e) => {
+$(document).keydown((e) => {
     socket.emit('keydown', e.keyCode);
 });
 
-$(document).keyup( (e) => {
+$(document).keyup((e) => {
     socket.emit('keyup', e.keycode);
 });
 
-$('#easelCan').mousedown( (e) => {
+$('#easelCan').mousedown((e) => {
     socket.emit('mousedown', e)
 });
 
-$('#easelCan').mousemove( (e) => {
+$('#easelCan').mousemove((e) => {
     socket.emit('mousemove', e);
 });
