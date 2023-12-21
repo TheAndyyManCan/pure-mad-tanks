@@ -17,6 +17,8 @@ class PureMadTanks extends Game {
         this.#numberOfWalls = numberOfWalls;
     }
 
+    get players(){return this.#players;}
+
     init = () => {
         this.#spawnAllObjects();
         this._interval = setInterval(() => {

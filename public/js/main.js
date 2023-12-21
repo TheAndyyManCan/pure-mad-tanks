@@ -34,7 +34,7 @@ socket.on('playersReady', () => {
 
 socket.on('endgame', () => {
     $('#easelCan').css('display', 'none');
-    $('#loginScreen').css('display', 'none');
+    $('#loginScreen').css('display', 'flex');
 });
 
 $('#nicknameForm').submit((e) => {

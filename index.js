@@ -26,14 +26,13 @@ http.listen(8000, function(){
         connections.push(socket);
 
         socket.on('disconnect', () => {
-            game.removePlayer(socket.id);
             if(isPlayer && !game.pause){
                 game.endGame();
-                game.removePlayer(socket.id);
                 for(let i in connections){
                     connections[i].emit('endgame');
                 }
             }
+            game.removePlayer(socket.id);
         });
 
         if(game.pause){
