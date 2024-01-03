@@ -29,7 +29,7 @@ class Game {
         this._gravity = new b2Vec2(gravityX, gravityY);
         this._framerate = framerate;
         this._world = new b2World(this._gravity, true);
-        this._contactListener = contactListener;
+        this._world.SetContactListener(contactListener);
         this._io = io;
         this.pause = true;
     }

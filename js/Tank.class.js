@@ -59,7 +59,8 @@ class Tank extends DynamicWorldObject {
         if(!this.#reloading){
             console.log('shoot');
             let tankPosition = this.getBody().GetWorldCenter();
-            let bullet = new BulletWorldObject(1.0, 0.5, 0, (tankPosition.x * scale), (tankPosition.y * scale), 'rocket', 'rocket'+ this.#rocketIndex, 10, scale, world, 'rocket');
+            let bullet = new BulletWorldObject(1.0, 0.5, 0, (tankPosition.x * scale), (tankPosition.y * scale), 'rocket', 'rocket'+ this.getBody().GetUserData().player + this.#rocketIndex, 10, scale, world, 'rocket');
+            bullet.changeUserData('player', this.getBody().GetUserData().player);
             bullet.getBody().ApplyImpulse(new b2Vec2((mouseX - tankPosition.x * scale), (mouseY - tankPosition.y * scale)), bullet.getBody().GetWorldCenter());
             this.#reloading = true;
             this.#rocketIndex++;
