@@ -148,7 +148,7 @@ class PureMadTanks extends Game {
         if(!found){
             for(let j in this.#spectators){
                 if(id == this.#spectators[j].id){
-                    this.#spectators.splice(i, 1);
+                    this.#spectators.splice(j, 1);
                     break;
                 }
             }
@@ -172,7 +172,6 @@ class PureMadTanks extends Game {
         this.#destroyAllObjects();
         this.pause = true;
     }
-
 
 }
 

@@ -67,11 +67,15 @@ http.listen(8000, function(){
         });
 
         socket.on('mousedown', (e) => {
-            // Handle mouse press
+            if(!game.pause && isPlayer){
+                player.tank.shootRocket(game.scale, game.world, player.mouseX, player.mouseY);
+            }
         });
 
         socket.on('mousemove', (e) => {
-            // Handle mouse move
+            if(!game.pause && isPlayer){
+                player.updateMousePosition(e);
+            }
         });
 
     });

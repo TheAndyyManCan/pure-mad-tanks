@@ -102,7 +102,7 @@ class Easel {
                         index = j;
                     }
                 }
-                if(index >= 0){
+                if(index >= 0 && data[i].id != "bullet"){
                     // Object already exists, update the stage
                     this._objects[index].image.x = data[i].x;
                     this._objects[index].image.y = data[i].y;

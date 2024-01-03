@@ -5,7 +5,6 @@ const { b2Vec2, b2BodyDef, b2Body, b2FixtureDef, b2Fixture, b2World, b2MassData,
 class WorldObject {
 
     _userData = {};
-    _uniqueName;
     _fixDef = new b2FixtureDef();
     _bodyDef = new b2BodyDef();
     _b2dobj;
@@ -76,4 +75,14 @@ class CircleWorldObject extends WorldObject {
     }
 }
 
-module.exports = { StaticWorldObject, DynamicWorldObject, CircleWorldObject };
+class BulletWorldObject extends WorldObject {
+    constructor(density, friction, restitution, x, y, objid, uniqueName, radius, SCALE, world, assetID){
+        super(density, friction, restitution, x, y, SCALE, objid, uniqueName, radius, radius, assetID);
+        this._bodyDef.type = b2Body.b2_dynamicBody;
+        this._bodyDef.bullet = true;
+        this._fixDef.shape = new b2CircleShape(radius / SCALE);
+        this._createObj(world, this._userDataFields);
+    }
+}
+
+module.exports = { StaticWorldObject, DynamicWorldObject, CircleWorldObject, BulletWorldObject };

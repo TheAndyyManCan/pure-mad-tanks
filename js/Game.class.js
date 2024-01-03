@@ -19,6 +19,9 @@ class Game {
     _io;
     pause;
 
+    get scale(){return this._scale;}
+    get world(){return this._world;}
+
     constructor(height, width, scale, gravityX, gravityY, framerate, io){
         this._height = height;
         this._width = width;

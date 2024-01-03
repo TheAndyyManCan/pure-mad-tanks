@@ -8,6 +8,8 @@ class Player {
     #nickname;
     #playerState; // connected, named, ready, disconnected
     #tank;
+    #mouseX;
+    #mouseY;
     tankSpawned = false;
 
     constructor(id){
@@ -18,6 +20,8 @@ class Player {
     get nickname(){return this.#nickname;}
     get playerState(){return this.#playerState;}
     get tank(){return this.#tank;}
+    get mouseX(){return this.#mouseX;}
+    get mouseY(){return this.#mouseY;}
 
     setNickname(socketId, nickname){
         if(socketId == this.id){
@@ -38,6 +42,11 @@ class Player {
     moveTank = (keycode) => {
         this.#tank.moveTank(keycode);
     };
+
+    updateMousePosition = (e) => {
+        this.#mouseX = e.x;
+        this.#mouseY = e.y;
+    }
 }
 
 module.exports = Player;

@@ -6,7 +6,8 @@ let manifest = [
     {src: './assets/vBorder.png', id: 'vBorder'},
     {src: './assets/hBorder.png', id: 'hBorder'},
     {src: './assets/tank.png', id: 'tank'},
-    {src: './assets/wall.png', id:'wall'}
+    {src: './assets/wall.png', id:'wall'},
+    {src: './assets/rocket.png', id:'rocket'}
 ];
 
 let easel = new Easel('easelCan', manifest, 60);
@@ -60,5 +61,9 @@ $('#easelCan').mousedown((e) => {
 });
 
 $('#easelCan').mousemove((e) => {
-    socket.emit('mousemove', e);
+    let mousePosition = {
+        x: e.offsetX,
+        y: e.offsetY
+    };
+    socket.emit('mousemove', mousePosition);
 });

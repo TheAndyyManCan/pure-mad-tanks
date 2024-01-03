@@ -1,9 +1,11 @@
 'use strict';
 
-const { DynamicWorldObject } = require("./WorldObject.class");
+const { DynamicWorldObject, BulletWorldObject } = require("./WorldObject.class");
 const { b2Vec2 } = require("./defs");
 
 class Tank extends DynamicWorldObject {
+
+    #reloading = false;
 
     constructor(density, friction, restitution, x, y, width, height, objid, uniquename, SCALE, world, assetID, playerID){
         super(density, friction, restitution, x, y, width, height, objid, uniquename, SCALE, world, assetID);
@@ -50,6 +52,19 @@ class Tank extends DynamicWorldObject {
         }
 
         this.getBody().SetLinearVelocity(new b2Vec2(x, y));
+    }
+
+    shootRocket = (scale, world, mouseX, mouseY) => {
+        if(!this.#reloading){
+            console.log('shoot');
+            let tankPosition = this.getBody().GetWorldCenter();
+            let bullet = new BulletWorldObject(1.0, 0.5, 0, (tankPosition.x * scale), (tankPosition.y * scale), 'rocket', 'rocket', 10, scale, world, 'rocket');
+            bullet.getBody().ApplyImpulse(new b2Vec2((mouseX - tankPosition.x * scale), (mouseY - tankPosition.y * scale)), bullet.getBody().GetWorldCenter());
+            this.#reloading = true;
+            setTimeout(() => {
+                this.#reloading = false;
+            }, 2500);
+        }
     }
 
     #changeTankSpeed = (forward) => {
