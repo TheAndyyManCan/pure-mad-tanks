@@ -89,7 +89,7 @@ class Easel {
                         data[i].width,
                         data[i].height
                     ),
-                    id: data[i].id
+                    id: data[i].uniqueName
                 });
                 this._addToStage(this._objects[this._objects.length - 1].image, data[i].x, data[i].y);
             }
@@ -98,11 +98,11 @@ class Easel {
             let index = -1;
             for(let i in data){
                 for(let j in this._objects){
-                    if(data[i].id == this._objects[j].id){
+                    if(data[i].uniqueName == this._objects[j].id){
                         index = j;
                     }
                 }
-                if(index >= 0 && data[i].id != "bullet"){
+                if(index >= 0){
                     // Object already exists, update the stage
                     this._objects[index].image.x = data[i].x;
                     this._objects[index].image.y = data[i].y;

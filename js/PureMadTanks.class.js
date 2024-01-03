@@ -111,8 +111,10 @@ class PureMadTanks extends Game {
                 let y = j.GetBody().GetPosition().y * this._scale;
                 let r = j.GetBody().GetAngle() * (180/Math.PI);
                 let assetID = j.GetBody().GetUserData().assetID;
+                let uniqueName = j.GetBody().GetUserData().uniqueName;
                 ret.push({
                     id: id,
+                    uniqueName: uniqueName,
                     width: Math.floor(width),
                     height: Math.floor(height),
                     x: Math.floor(x),
