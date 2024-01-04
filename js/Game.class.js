@@ -21,6 +21,7 @@ class Game {
 
     get scale(){return this._scale;}
     get world(){return this._world;}
+    get contactListener(){return this._contactListener;}
 
     constructor(height, width, scale, gravityX, gravityY, framerate, io){
         this._height = height;
@@ -29,7 +30,8 @@ class Game {
         this._gravity = new b2Vec2(gravityX, gravityY);
         this._framerate = framerate;
         this._world = new b2World(this._gravity, true);
-        this._world.SetContactListener(contactListener);
+        this._contactListener = contactListener;
+        this._world.SetContactListener(this._contactListener);
         this._io = io;
         this.pause = true;
     }
@@ -49,6 +51,10 @@ class Game {
             this._io.sockets.emit('objdata', this._drawDomObjects());
         }
     };
+
+    destroyObject = (objectBody) => {
+        this._destroyList.push(objectBody);
+    }
 
     _gameLogic = () => {
 

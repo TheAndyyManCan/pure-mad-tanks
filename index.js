@@ -80,3 +80,5 @@ http.listen(8000, function(){
 
     });
 });
+
+module.exports = game;
