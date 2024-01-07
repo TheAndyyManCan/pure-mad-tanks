@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const { b2Vec2 } = require('box2dweb-commonjs');
 const PureMadTanks = require('./js/PureMadTanks.class.js');
 const Player = require('./js/Player.class');
 
@@ -80,5 +81,44 @@ http.listen(8000, function(){
 
     });
 });
+
+/**
+ * Collision logic
+ */
+game.contactListener.BeginContact = (contact) => {
+    let fixa = contact.GetFixtureA().GetBody();
+    let fixb = contact.GetFixtureB().GetBody();
+
+    if(fixa.GetUserData().id === 'rocket' && fixb.GetUserData().id != 'tank'){
+        fixa.SetLinearVelocity(new b2Vec2(0,0));
+        game.destroyObject(fixa);
+        console.log('fixa :' + fixa.GetUserData().id);
+        console.log('fixb :' + fixb.GetUserData().id);
+    }
+
+    if(fixb.GetUserData().id === 'rocket' && fixa.GetUserData().id != 'tank'){
+        fixb.SetLinearVelocity(new b2Vec2(0,0));
+        game.destroyObject(fixb);
+        console.log('fixa :' + fixa.GetUserData().id);
+        console.log('fixb :' + fixb.GetUserData().id);
+    }
+};
+
+game.contactListener.EndContact = (contact) => {
+
+};
+
+game.contactListener.PreSolve = (contact, Impulse) => {
+    let fixa = contact.GetFixtureA().GetBody();
+    let fixb = contact.GetFixtureB().GetBody();
+
+    if((fixa.GetUserData().id === 'tank' && fixb.GetUserData().id === 'rocket') || (fixa.GetUserData().id === 'rocket' && fixa.GetUserData().id === 'tank') && (fixa.GetUserData().player === fixb.GetUserData().player)){
+        contact.SetEnabled(false);
+    }
+};
+
+game.contactListener.PostSolve = (contact, oldManifest) => {
+
+};
 
 module.exports = game;

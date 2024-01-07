@@ -3,6 +3,7 @@
 const { b2Vec2, b2BodyDef, b2Body, b2FixtureDef, b2Fixture, b2World, b2MassData, b2PolygonShape, b2CircleShape, b2DebugDraw, b2MouseJointDef, b2EdgeShape } = require('./defs.js');
 const ControlHandler = require('./EventHandlers.class.js');
 const contactListener = require('./contactlisteners');
+const { Box2D } = require('box2dweb-commonjs');
 
 class Game {
 
@@ -30,7 +31,7 @@ class Game {
         this._gravity = new b2Vec2(gravityX, gravityY);
         this._framerate = framerate;
         this._world = new b2World(this._gravity, true);
-        this._contactListener = contactListener;
+        this._contactListener = new Box2D.Dynamics.b2ContactListener();
         this._world.SetContactListener(this._contactListener);
         this._io = io;
         this.pause = true;
