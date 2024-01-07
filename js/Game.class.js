@@ -2,7 +2,6 @@
 
 const { b2Vec2, b2BodyDef, b2Body, b2FixtureDef, b2Fixture, b2World, b2MassData, b2PolygonShape, b2CircleShape, b2DebugDraw, b2MouseJointDef, b2EdgeShape } = require('./defs.js');
 const ControlHandler = require('./EventHandlers.class.js');
-const contactListener = require('./contactlisteners');
 const { Box2D } = require('box2dweb-commonjs');
 
 class Game {
@@ -48,8 +47,8 @@ class Game {
             this._gameLogic();
             this._world.DrawDebugData();
             this._world.ClearForces();
-            this._destroyListLogic();
             this._io.sockets.emit('objdata', this._drawDomObjects());
+            this._destroyListLogic();
         }
     };
 

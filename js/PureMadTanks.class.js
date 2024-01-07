@@ -112,6 +112,16 @@ class PureMadTanks extends Game {
                 let r = j.GetBody().GetAngle() * (180/Math.PI);
                 let assetID = j.GetBody().GetUserData().assetID;
                 let uniqueName = j.GetBody().GetUserData().uniqueName;
+                let destroyed = false;
+
+                // Check if the item is in the destroy list
+                for(let k in this._destroyList){
+                    if(uniqueName === this._destroyList[k].GetUserData().uniqueName){
+                        destroyed = true;
+                        break;
+                    }
+                }
+
                 ret.push({
                     id: id,
                     uniqueName: uniqueName,
@@ -120,7 +130,8 @@ class PureMadTanks extends Game {
                     x: Math.floor(x),
                     y: Math.floor(y),
                     r: Math.floor(r),
-                    assetID: assetID
+                    assetID: assetID,
+                    destroyed: destroyed
                 });
             }
         }
@@ -168,6 +179,19 @@ class PureMadTanks extends Game {
             }
         }
         return playerReady == this.#players.length;
+    }
+
+    findPlayer = (playerID) => {
+        let player;
+
+        for(let i in this.#players){
+            if(this.#players[i].id === playerID){
+                player = this.#players[i];
+                break;
+            }
+        }
+
+        return player;
     }
 
     endGame = () => {

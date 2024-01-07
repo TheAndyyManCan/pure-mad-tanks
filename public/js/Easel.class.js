@@ -104,9 +104,13 @@ class Easel {
                 }
                 if(index >= 0){
                     // Object already exists, update the stage
-                    this._objects[index].image.x = data[i].x;
-                    this._objects[index].image.y = data[i].y;
-                    this._objects[index].image.rotation = data[i].r;
+                    if(data[i].destroyed){
+                        this._stage.removeChild(this._objects[index].image);
+                    } else {
+                        this._objects[index].image.x = data[i].x;
+                        this._objects[index].image.y = data[i].y;
+                        this._objects[index].image.rotation = data[i].r;
+                    }
                 } else {
                     // Object does not exist, create new object and add to the stage
                     this._objects.push({

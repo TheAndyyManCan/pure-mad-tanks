@@ -92,15 +92,41 @@ game.contactListener.BeginContact = (contact) => {
     if(fixa.GetUserData().id === 'rocket' && fixb.GetUserData().id != 'tank'){
         fixa.SetLinearVelocity(new b2Vec2(0,0));
         game.destroyObject(fixa);
-        console.log('fixa :' + fixa.GetUserData().id);
-        console.log('fixb :' + fixb.GetUserData().id);
     }
 
     if(fixb.GetUserData().id === 'rocket' && fixa.GetUserData().id != 'tank'){
         fixb.SetLinearVelocity(new b2Vec2(0,0));
         game.destroyObject(fixb);
-        console.log('fixa :' + fixa.GetUserData().id);
-        console.log('fixb :' + fixb.GetUserData().id);
+    }
+
+    if((fixa.GetUserData().id === 'rocket' && fixb.GetUserData().id === 'tank') && (fixa.GetUserData().player !== fixb.GetUserData().player)){
+        // Find the tank that has been hit and reduce its health
+        let tankPlayer = game.findPlayer(fixb.GetUserData().player);
+        if(tankPlayer){
+            let currentTankHealth = tankPlayer.tank.getBody().GetUserData().health;
+            let newHealth = currentTankHealth - 25;
+            if(newHealth > 0){
+                tankPlayer.tank.changeUserData('health', newHealth);
+            } else {
+                game.destroyObject(tankPlayer.tank.getBody());
+            }
+        }
+        console.log(tankPlayer.tank.getBody().GetUserData());
+    }
+
+    if((fixb.GetUserData().id === 'rocket' && fixa.GetUserData().id === 'tank') && (fixa.GetUserData().player !== fixb.GetUserData().player)){
+        // Find the tank that has been hit and reduce its health
+        let tankPlayer = game.findPlayer(fixa.GetUserData().player);
+        if(tankPlayer){
+            let currentTankHealth = tankPlayer.tank.getBody().GetUserData().health;
+            let newHealth = currentTankHealth - 25;
+            if(newHealth > 0){
+                tankPlayer.tank.changeUserData('health', newHealth);
+            } else {
+                game.destroyObject(tankPlayer.tank.getBody());
+            }
+        }
+        console.log(tankPlayer.tank.getBody().GetUserData());
     }
 };
 
@@ -120,5 +146,3 @@ game.contactListener.PreSolve = (contact, Impulse) => {
 game.contactListener.PostSolve = (contact, oldManifest) => {
 
 };
-
-module.exports = game;
