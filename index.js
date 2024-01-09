@@ -110,6 +110,7 @@ game.contactListener.BeginContact = (contact) => {
             } else {
                 game.destroyObject(tankPlayer.tank.getBody());
             }
+            game.destroyObject(fixa);
         }
         console.log(tankPlayer.tank.getBody().GetUserData());
     }
@@ -125,6 +126,7 @@ game.contactListener.BeginContact = (contact) => {
             } else {
                 game.destroyObject(tankPlayer.tank.getBody());
             }
+            game.destroyObject(fixb);
         }
         console.log(tankPlayer.tank.getBody().GetUserData());
     }

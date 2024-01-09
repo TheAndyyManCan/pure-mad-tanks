@@ -172,7 +172,6 @@ class PureMadTanks extends Game {
         let playerReady = 0;
         if(this.#players.length > 1){
             for(let i in this.#players){
-                console.log(this.#players[i].playerState);
                 if(this.#players[i].playerState == 'ready'){
                     playerReady++;
                 }
@@ -183,14 +182,12 @@ class PureMadTanks extends Game {
 
     findPlayer = (playerID) => {
         let player;
-
         for(let i in this.#players){
             if(this.#players[i].id === playerID){
                 player = this.#players[i];
                 break;
             }
         }
-
         return player;
     }
 
