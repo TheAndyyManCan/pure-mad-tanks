@@ -57,7 +57,6 @@ class Tank extends DynamicWorldObject {
 
     shootRocket = (scale, world, mouseX, mouseY) => {
         if(!this.#reloading){
-            console.log('shoot');
             let tankPosition = this.getBody().GetWorldCenter();
             let bullet = new BulletWorldObject(1.0, 0.5, 0, (tankPosition.x * scale), (tankPosition.y * scale), 'rocket', 'rocket'+ this.getBody().GetUserData().player + this.#rocketIndex, 10, scale, world, 'rocket');
             bullet.changeUserData('player', this.getBody().GetUserData().player);

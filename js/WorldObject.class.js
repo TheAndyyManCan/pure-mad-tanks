@@ -27,6 +27,9 @@ class WorldObject {
     }
 
     _createObj(world, userDataFields){
+        // console.log(world.CreateBody(this._bodyDef));
+        // console.log(this._bodyDef);
+        // console.log(this._fixDef);
         this._b2dobj = world.CreateBody(this._bodyDef).CreateFixture(this._fixDef);
         for(let i in userDataFields){
             this.changeUserData(userDataFields[i].field, userDataFields[i].value);

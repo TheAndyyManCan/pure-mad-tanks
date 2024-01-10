@@ -11,6 +11,7 @@ class PureMadTanks extends Game {
     #spectators = [];
     #walls = [];
     #numberOfWalls;
+    #wallSplitQueue = [];
 
     constructor(height, width, scale, gravityX, gravityY, framerate, io, numberOfWalls){
         super(height, width, scale, gravityX, gravityY, framerate, io);
@@ -30,6 +31,12 @@ class PureMadTanks extends Game {
         for(let i in this.#players){
             this.#players[i].tank.decelerateTank();
         }
+
+        for(let j in this.#wallSplitQueue){
+            this.#splitWall(this.#wallSplitQueue[j].wall, this.#wallSplitQueue[j].contactPoint);
+        }
+
+        this.#wallSplitQueue.length = 0;
     };
 
     _destroyListLogic = () => {
@@ -59,7 +66,7 @@ class PureMadTanks extends Game {
             let x = (Math.random() * this._width);
             let y = (Math.random() * this._height);
 
-            // 50% chance to vertical or horizontal
+            // 50% chance to be vertical or horizontal
             if(chance > 0.5){
                 angle = 1.571; // 180 degrees in radians
             }
@@ -69,7 +76,7 @@ class PureMadTanks extends Game {
                 y = (Math.random() * this._height);
             }
 
-            this.#walls.push(new Wall(1.0, 0.5, 0.05, x, y, ((Math.random() * 500) + 100), 10, angle, 'wall', 'wall' + i, this._scale, this._world, 'wall'));
+            this.#walls.push(new Wall(1.0, 0.5, 0.05, x, y, ((Math.random() * 300) + 100), 10, angle, 'wall', 'wall' + i, this._scale, this._world, 'wall'));
 
         }
 
@@ -178,7 +185,7 @@ class PureMadTanks extends Game {
             }
         }
         return playerReady == this.#players.length;
-    }
+    };
 
     findPlayer = (playerID) => {
         let player;
@@ -189,12 +196,85 @@ class PureMadTanks extends Game {
             }
         }
         return player;
+    };
+
+    findWall = (wallID) => {
+        let wall;
+        for(let i in this.#walls){
+            if(this.#walls[i].uniqueName === wallID){
+                wall = this.#walls[i];
+                break;
+            }
+        }
+        return wall;
     }
 
     endGame = () => {
         this.#destroyAllObjects();
         this.pause = true;
-    }
+    };
+
+    #splitWall = (wall, contactPoint) => {
+        let startPoint, endPoint;
+        // console.log(contactPoint);
+
+        if(wall.angle > 1){
+            startPoint = wall.y - wall.width / 2;
+            endPoint = wall.y + wall.width / 2;
+            // console.log('Start point: ' + startPoint);
+            // console.log('End point: ' + endPoint);
+            if((contactPoint.y - 50 < startPoint) || (endPoint - 50 < contactPoint.y)){
+                console.log('hit');
+            } else {
+                let wall1Width = contactPoint.y - startPoint - 25;
+                let wall2Width = endPoint - contactPoint.y - 25;
+                let wall1y = startPoint + (wall1Width / 2);
+                let wall2y = contactPoint.y + 25 + (wall2Width / 2);
+                this.destroyObject(wall.getBody());
+                this.#walls.splice(this.#walls.indexOf(wall), 1);
+                // console.log('wallx: ' + wall.x);
+                // console.log('wally: ' + wall.y);
+                // console.log('wall1y: ' + wall1y);
+                // console.log('wall2y: ' + wall2y);
+                // console.log('wall1Width: ' + wall1Width);
+                // console.log('wall2Width: ' + wall2Width);
+                // console.log('angle: ' + wall.angle);
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall1y, wall1Width, 10, wall.angle, 'wall', 'wall' + this.#walls.length + 1, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall2y, wall2Width, 10, wall.angle, 'wall', 'wall' + this.#walls.length + 2, this._scale, this._world, 'wall'));
+            }
+        } else {
+            startPoint = wall.x - wall.width / 2;
+            endPoint = wall.x + wall.width / 2;
+            // console.log('Start point: ' + startPoint);
+            // console.log('End point: ' + endPoint);
+            if((contactPoint.x - 50 < startPoint) || (endPoint - 50 < contactPoint.x)){
+                console.log('hit');
+            } else {
+                let wall1Width = contactPoint.x - startPoint - 25;
+                let wall2Width = endPoint - contactPoint.x - 25;
+                let wall1x = startPoint + (wall1Width / 2);
+                let wall2x = contactPoint.x + 25 + (wall2Width / 2);
+                this.destroyObject(wall.getBody());
+                this.#walls.splice(this.#walls.indexOf(wall), 1);
+                // console.log('wallx: ' + wall.x);
+                // console.log('wally: ' + wall.y);
+                // console.log('wall1x: ' + wall1x);
+                // console.log('wall2x: ' + wall2x);
+                // console.log('wall1Width: ' + wall1Width);
+                // console.log('wall2Width: ' + wall2Width);
+                // console.log('angle: ' + wall.angle);
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall1x, wall.y, wall1Width, 10, wall.angle, 'wall', wall + this.#walls.length, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall2x, wall.y, wall2Width, 10, wall.angle, 'wall', wall + this.#walls.length + 1, this._scale, this._world, 'wall'));
+            }
+        }
+    };
+
+    addToWallSplitQueue = (wall, contactPoint) => {
+        this.#wallSplitQueue.push({
+            wall: wall,
+            contactPoint: contactPoint
+        });
+    };
 
 }
 

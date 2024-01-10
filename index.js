@@ -6,6 +6,7 @@ const io = require('socket.io')(http);
 const { b2Vec2 } = require('box2dweb-commonjs');
 const PureMadTanks = require('./js/PureMadTanks.class.js');
 const Player = require('./js/Player.class');
+const { b2WorldManifold } = require('./js/defs');
 
 let connections = [];
 
@@ -88,6 +89,8 @@ http.listen(8000, function(){
 game.contactListener.BeginContact = (contact) => {
     let fixa = contact.GetFixtureA().GetBody();
     let fixb = contact.GetFixtureB().GetBody();
+    let fixaId = fixa.GetUserData().id;
+    let fixbId = fixb.GetUserData().id;
 
     if(fixa.GetUserData().id === 'rocket' && fixb.GetUserData().id != 'tank'){
         fixa.SetLinearVelocity(new b2Vec2(0,0));
@@ -112,7 +115,6 @@ game.contactListener.BeginContact = (contact) => {
             }
             game.destroyObject(fixa);
         }
-        console.log(tankPlayer.tank.getBody().GetUserData());
     }
 
     if((fixb.GetUserData().id === 'rocket' && fixa.GetUserData().id === 'tank') && (fixa.GetUserData().player !== fixb.GetUserData().player)){
@@ -128,7 +130,22 @@ game.contactListener.BeginContact = (contact) => {
             }
             game.destroyObject(fixb);
         }
-        console.log(tankPlayer.tank.getBody().GetUserData());
+    }
+
+    if(fixaId === "rocket" && fixbId === "wall"){
+        let worldManifold = new b2WorldManifold();
+        worldManifold.Initialize(contact.GetManifold(), fixa.m_xf, contact.GetFixtureA().GetShape().radius, fixb.m_xf, contact.GetFixtureB().GetShape().radius);
+        let contactPoint = new b2Vec2(worldManifold.m_points[0].x * game.scale, worldManifold.m_points[0].y * game.scale);
+        let wall = game.findWall(fixb.GetUserData().uniqueName);
+        game.addToWallSplitQueue(wall, contactPoint);
+    }
+
+    if(fixbId === "rocket" && fixaId === "wall"){
+        let worldManifold = new b2WorldManifold();
+        worldManifold.Initialize(contact.GetManifold(), fixa.m_xf, contact.GetFixtureA().GetShape().radius, fixb.m_xf, contact.GetFixtureB().GetShape().radius);
+        let contactPoint = new b2Vec2(worldManifold.m_points[0].x * game.scale, worldManifold.m_points[0].y * game.scale);
+        let wall = game.findWall(fixa.GetUserData().uniqueName);
+        game.addToWallSplitQueue(wall, contactPoint);
     }
 };
 
