@@ -239,8 +239,8 @@ class PureMadTanks extends Game {
                 // console.log('wall1Width: ' + wall1Width);
                 // console.log('wall2Width: ' + wall2Width);
                 // console.log('angle: ' + wall.angle);
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall1y, wall1Width, 10, wall.angle, 'wall', 'wall' + this.#walls.length + 1, this._scale, this._world, 'wall'));
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall2y, wall2Width, 10, wall.angle, 'wall', 'wall' + this.#walls.length + 2, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall1y, wall1Width, 10, wall.angle, 'wall', 'wall' + this.#walls.length, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall2y, wall2Width, 10, wall.angle, 'wall', 'wall' + this.#walls.length, this._scale, this._world, 'wall'));
             }
         } else {
             startPoint = wall.x - wall.width / 2;
@@ -264,7 +264,7 @@ class PureMadTanks extends Game {
                 // console.log('wall2Width: ' + wall2Width);
                 // console.log('angle: ' + wall.angle);
                 this.#walls.push(new Wall(1.0, 0.5, 0.05, wall1x, wall.y, wall1Width, 10, wall.angle, 'wall', wall + this.#walls.length, this._scale, this._world, 'wall'));
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall2x, wall.y, wall2Width, 10, wall.angle, 'wall', wall + this.#walls.length + 1, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall2x, wall.y, wall2Width, 10, wall.angle, 'wall', wall + this.#walls.length, this._scale, this._world, 'wall'));
             }
         }
     };
