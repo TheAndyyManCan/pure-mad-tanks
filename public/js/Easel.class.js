@@ -105,6 +105,7 @@ class Easel {
                 if(index >= 0){
                     // Object already exists, update the stage
                     if(data[i].destroyed){
+                        console.log(data[i].uniqueName);
                         this._stage.removeChild(this._objects[index].image);
                     } else {
                         this._objects[index].image.x = data[i].x;

@@ -22,6 +22,10 @@ class PureMadTanks extends Game {
 
     init = () => {
         this.#spawnAllObjects();
+        // for(let i in this.#walls){
+        //     console.log(i + ' x: ' + this.#walls[i].getBody().GetWorldCenter().x * this._scale);
+        //     console.log(i + ' y: ' + this.#walls[i].getBody().GetWorldCenter().y * this._scale);
+        // }
         this._interval = setInterval(() => {
             this.update();
         }, 1000/this._framerate);
@@ -216,6 +220,8 @@ class PureMadTanks extends Game {
 
     #splitWall = (wall, contactPoint) => {
         let startPoint, endPoint;
+        let randomID1 = Math.random() * 10000000;
+        let randomID2 = Math.random() * 10000000;
         // console.log(contactPoint);
 
         if(wall.angle > 1){
@@ -223,15 +229,25 @@ class PureMadTanks extends Game {
             endPoint = wall.y + wall.width / 2;
             // console.log('Start point: ' + startPoint);
             // console.log('End point: ' + endPoint);
-            if((contactPoint.y - 50 < startPoint) || (endPoint - 50 < contactPoint.y)){
-                console.log('hit');
-            } else {
-                let wall1Width = contactPoint.y - startPoint - 25;
-                let wall2Width = endPoint - contactPoint.y - 25;
-                let wall1y = startPoint + (wall1Width / 2);
-                let wall2y = contactPoint.y + 25 + (wall2Width / 2);
+            if(contactPoint.y - 50 < startPoint){
+                let wallWidth = endPoint - (contactPoint.y + 25);
+                let wally = endPoint - (wallWidth / 2);
                 this.destroyObject(wall.getBody());
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wally, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
                 this.#walls.splice(this.#walls.indexOf(wall), 1);
+            } else if(endPoint - 50 < contactPoint.y){
+                let wallWidth = (contactPoint.y - 25) - startPoint;
+                let wally = startPoint + (wallWidth / 2);
+                this.destroyObject(wall.getBody());
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wally, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
+                this.#walls.splice(this.#walls.indexOf(wall), 1);
+            } else {
+                console.log(wall.getBody().GetUserData().uniqueName);
+                let wall1Width = (contactPoint.y - 25) - startPoint;
+                let wall2Width = endPoint - (contactPoint.y + 25);
+                let wall1y = startPoint + (wall1Width / 2);
+                let wall2y = endPoint - (wall2Width / 2);
+                this.destroyObject(wall.getBody());
                 // console.log('wallx: ' + wall.x);
                 // console.log('wally: ' + wall.y);
                 // console.log('wall1y: ' + wall1y);
@@ -239,23 +255,49 @@ class PureMadTanks extends Game {
                 // console.log('wall1Width: ' + wall1Width);
                 // console.log('wall2Width: ' + wall2Width);
                 // console.log('angle: ' + wall.angle);
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall1y, wall1Width, 10, wall.angle, 'wall', 'wall' + this.#walls.length, this._scale, this._world, 'wall'));
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall2y, wall2Width, 10, wall.angle, 'wall', 'wall' + this.#walls.length, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall1y, wall1Width, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wall2y, wall2Width, 10, wall.angle, 'wall', 'wall' + randomID2, this._scale, this._world, 'wall'));
+                this.#walls.splice(this.#walls.indexOf(wall), 1);
+                // console.log('width: ' + wall.width);
+                // console.log('start point: ' + startPoint);
+                // console.log('end point: ' + endPoint);
+                // console.log('wall hit x: ' + wall.x);
+                // console.log('wall hit y: ' + wall.y);
+                // console.log('contact point: x - ' + contactPoint.x + ', y - ' + contactPoint.y);
+                // console.log('wall1 width: ' + wall1Width);
+                // console.log('wall2 width: ' + wall2Width);
+                // for(let i in this.#walls){
+                //     console.log(i + ' x: ' + this.#walls[i].getBody().GetWorldCenter().x * this._scale);
+                //     console.log(i + ' y: ' + this.#walls[i].getBody().GetWorldCenter().y * this._scale);
+                // }
+                // for(let i in this.#walls){
+                //     console.log(this.#walls[i].getBody().GetUserData().uniqueName);
+                // }
             }
         } else {
             startPoint = wall.x - wall.width / 2;
             endPoint = wall.x + wall.width / 2;
             // console.log('Start point: ' + startPoint);
             // console.log('End point: ' + endPoint);
-            if((contactPoint.x - 50 < startPoint) || (endPoint - 50 < contactPoint.x)){
-                console.log('hit');
-            } else {
-                let wall1Width = contactPoint.x - startPoint - 25;
-                let wall2Width = endPoint - contactPoint.x - 25;
-                let wall1x = startPoint + (wall1Width / 2);
-                let wall2x = contactPoint.x + 25 + (wall2Width / 2);
+            if(contactPoint.x - 50 < startPoint){
+                let wallWidth = endPoint - (contactPoint.x + 25);
+                let wallx = endPoint - (wallWidth / 2);
                 this.destroyObject(wall.getBody());
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wallx, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
                 this.#walls.splice(this.#walls.indexOf(wall), 1);
+            } else if(endPoint - 50 < contactPoint.x){
+                let wallWidth = (contactPoint.x - 25) - startPoint;
+                let wallx = startPoint + (wallWidth / 2);
+                this.destroyObject(wall.getBody());
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wallx, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
+                this.#walls.splice(this.#walls.indexOf(wall), 1);
+            } else {
+                console.log(wall.getBody().GetUserData().uniqueName);
+                let wall1Width = (contactPoint.x - 25) - startPoint;
+                let wall2Width = endPoint - (contactPoint.x + 25);
+                let wall1x = startPoint + (wall1Width / 2);
+                let wall2x = endPoint - (wall2Width / 2);
+                this.destroyObject(wall.getBody());
                 // console.log('wallx: ' + wall.x);
                 // console.log('wally: ' + wall.y);
                 // console.log('wall1x: ' + wall1x);
@@ -263,8 +305,23 @@ class PureMadTanks extends Game {
                 // console.log('wall1Width: ' + wall1Width);
                 // console.log('wall2Width: ' + wall2Width);
                 // console.log('angle: ' + wall.angle);
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall1x, wall.y, wall1Width, 10, wall.angle, 'wall', wall + this.#walls.length, this._scale, this._world, 'wall'));
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall2x, wall.y, wall2Width, 10, wall.angle, 'wall', wall + this.#walls.length, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall1x, wall.y, wall1Width, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall2x, wall.y, wall2Width, 10, wall.angle, 'wall', 'wall' + randomID2, this._scale, this._world, 'wall'));
+                this.#walls.splice(this.#walls.indexOf(wall), 1);
+                // for(let i in this.#walls){
+                //     console.log(this.#walls[i].getBody().GetUserData().uniqueName);
+                // }
+                // console.log('start point: ' + startPoint);
+                // console.log('end point: ' + endPoint);
+                // console.log('wall hit x: ' + wall.x);
+                // console.log('wall hit y: ' + wall.y);
+                // console.log('contact point: x - ' + contactPoint.x + ', y - ' + contactPoint.y);
+                // console.log('wall1 width: ' + wall1Width);
+                // console.log('wall2 width: ' + wall2Width);
+                // for(let i in this.#walls){
+                //     console.log(i + ' x: ' + this.#walls[i].getBody().GetWorldCenter().x * this._scale);
+                //     console.log(i + ' y: ' + this.#walls[i].getBody().GetWorldCenter().y * this._scale);
+                // }
             }
         }
     };

@@ -13,19 +13,19 @@ class Wall extends StaticWorldObject {
     #uniqueName;
 
     constructor(density, friction, restitution, x, y, width, height, angle, objid, uniquename, SCALE, world, assetID){
-        console.log('density: ' + density);
-        console.log('friction: ' + friction);
-        console.log('restitution: ' + restitution);
-        console.log('x: ' + x);
-        console.log('y: ' + y);
-        console.log('width: ' + width);
-        console.log('height: ' + height);
-        console.log('angle: ' + angle);
-        console.log('objid: ' + objid);
-        console.log('uniquename: ' + uniquename);
-        console.log('SCALE: ' + SCALE);
-        console.log('world: ' + world);
-        console.log('assetID: ' + assetID);
+        // console.log('density: ' + density);
+        // console.log('friction: ' + friction);
+        // console.log('restitution: ' + restitution);
+        // console.log('x: ' + x);
+        // console.log('y: ' + y);
+        // console.log('width: ' + width);
+        // console.log('height: ' + height);
+        // console.log('angle: ' + angle);
+        // console.log('objid: ' + objid);
+        // console.log('uniquename: ' + uniquename);
+        // console.log('SCALE: ' + SCALE);
+        // console.log('world: ' + world);
+        // console.log('assetID: ' + assetID);
         super(density, friction, restitution, x, y, width, height, objid, uniquename, angle, SCALE, world, assetID);
         this.changeUserData('health', 10);
         this.#x = x;
