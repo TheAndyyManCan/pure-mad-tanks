@@ -225,8 +225,10 @@ class PureMadTanks extends Game {
         // console.log(contactPoint);
 
         if(wall.angle > 1){
-            startPoint = wall.y - wall.width / 2;
-            endPoint = wall.y + wall.width / 2;
+            startPoint = wall.y - (wall.width / 2);
+            console.log('wall y : ' + wall.y);
+            console.log('wall width / 2: ' + (wall.width / 2));
+            endPoint = wall.y + (wall.width / 2);
             // console.log('Start point: ' + startPoint);
             // console.log('End point: ' + endPoint);
             if(contactPoint.y - 50 < startPoint){
@@ -237,6 +239,10 @@ class PureMadTanks extends Game {
                 this.#walls.splice(this.#walls.indexOf(wall), 1);
             } else if(endPoint - 50 < contactPoint.y){
                 let wallWidth = (contactPoint.y - 25) - startPoint;
+                console.log('contact point: ' + contactPoint.y);
+                console.log('start point: ' + startPoint);
+                console.log(wall.width);
+                console.log(wallWidth);
                 let wally = startPoint + (wallWidth / 2);
                 this.destroyObject(wall.getBody());
                 this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wally, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
@@ -275,21 +281,27 @@ class PureMadTanks extends Game {
                 // }
             }
         } else {
-            startPoint = wall.x - wall.width / 2;
-            endPoint = wall.x + wall.width / 2;
+            startPoint = wall.x - (wall.width / 2);
+            console.log('wall x : ' + wall.x);
+            console.log('wall width / 2: ' + (wall.width / 2));
+            endPoint = wall.x + (wall.width / 2);
             // console.log('Start point: ' + startPoint);
             // console.log('End point: ' + endPoint);
             if(contactPoint.x - 50 < startPoint){
                 let wallWidth = endPoint - (contactPoint.x + 25);
                 let wallx = endPoint - (wallWidth / 2);
                 this.destroyObject(wall.getBody());
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wallx, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wallx, wall.y, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
                 this.#walls.splice(this.#walls.indexOf(wall), 1);
             } else if(endPoint - 50 < contactPoint.x){
                 let wallWidth = (contactPoint.x - 25) - startPoint;
+                console.log('contact point: ' + contactPoint.x);
+                console.log('start point: ' + startPoint);
+                console.log(wall.width);
+                console.log(wallWidth);
                 let wallx = startPoint + (wallWidth / 2);
                 this.destroyObject(wall.getBody());
-                this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wallx, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
+                this.#walls.push(new Wall(1.0, 0.5, 0.05, wallx, wall.y, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
                 this.#walls.splice(this.#walls.indexOf(wall), 1);
             } else {
                 console.log(wall.getBody().GetUserData().uniqueName);
