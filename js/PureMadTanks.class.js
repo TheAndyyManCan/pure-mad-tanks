@@ -115,7 +115,7 @@ class PureMadTanks extends Game {
         let ret = [];
         for(let i = this._world.GetBodyList(); i; i = i.GetNext()){
             for(let j = i.GetFixtureList(); j; j = j.GetNext()){
-                let id = j.GetBody().GetUserData().uniqueName;
+                let id = j.GetBody().GetUserData().id;
                 let width = j.GetBody().GetUserData().width;
                 let height = j.GetBody().GetUserData().height;
                 let x = j.GetBody().GetPosition().x * this._scale;
@@ -124,6 +124,7 @@ class PureMadTanks extends Game {
                 let assetID = j.GetBody().GetUserData().assetID;
                 let uniqueName = j.GetBody().GetUserData().uniqueName;
                 let destroyed = false;
+                let player = j.GetBody().GetUserData().player;
 
                 // Check if the item is in the destroy list
                 for(let k in this._destroyList){
@@ -142,7 +143,8 @@ class PureMadTanks extends Game {
                     y: Math.floor(y),
                     r: Math.floor(r),
                     assetID: assetID,
-                    destroyed: destroyed
+                    destroyed: destroyed,
+                    player: player
                 });
             }
         }
@@ -239,7 +241,6 @@ class PureMadTanks extends Game {
                 this.#walls.push(new Wall(1.0, 0.5, 0.05, wall.x, wally, wallWidth, 10, wall.angle, 'wall', 'wall' + randomID1, this._scale, this._world, 'wall'));
                 this.#walls.splice(this.#walls.indexOf(wall), 1);
             } else {
-                console.log(wall.getBody().GetUserData().uniqueName);
                 let wall1Width = (contactPoint.y - 25) - startPoint;
                 let wall2Width = endPoint - (contactPoint.y + 25);
                 let wall1y = startPoint + (wall1Width / 2);

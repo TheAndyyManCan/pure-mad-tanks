@@ -10,7 +10,21 @@ let manifest = [
     {src: './assets/rocket.png', id:'rocket'}
 ];
 
-let easel = new Easel('easelCan', manifest, 60);
+let activeWindow = {
+    leftPadding : 200,
+    topPadding : 200,
+    rightPadding : 200,
+    bottomPadding : 200
+};
+
+let viewport = new Viewport($('#viewport'), $('#easelCan'), 100, activeWindow);
+let easel = new Easel('easelCan', manifest, 60, viewport);
+
+socket.on('connection', () => {
+    console.log(socket.id);
+    console.log('hit');
+    easel.playerID = socket.id;
+});
 
 socket.on('objdata', function(data){
     easel.drawB2DGraphics(data);
@@ -30,11 +44,13 @@ socket.on('playersReady', () => {
     $('#loginScreen').css('display', 'none');
     $('#waitScreen').css('display', 'none');
     $('#spectatorWaitScreen').css('display', 'none');
+    $('#viewport').css('display', 'block');
     $('#easelCan').css('display', 'block');
 });
 
 socket.on('endgame', () => {
     $('#easelCan').css('display', 'none');
+    $('viewport').css('display', 'none');
     $('#loginScreen').css('display', 'flex');
 });
 

@@ -14,8 +14,10 @@ class Easel {
     _objects = [];
     _manifest;
     _initialised;
+    _viewport;
+    playerID;
 
-    constructor(canvasName, manifest, framerate){
+    constructor(canvasName, manifest, framerate, viewport){
         this._easelCan = document.getElementById(canvasName);
         this._easelCtx = this._easelCan.getContext('2d');
         this._stage = new createjs.Stage(this._easelCan);
@@ -27,6 +29,7 @@ class Easel {
         this._loader.loadManifest(this._manifest, true);
         this._framerate = framerate;
         this._inititialised = false;
+        this._viewport = viewport;
     }
 
     _handleComplete = () => {
@@ -92,6 +95,9 @@ class Easel {
                     id: data[i].uniqueName
                 });
                 this._addToStage(this._objects[this._objects.length - 1].image, data[i].x, data[i].y);
+                if(data[i].id === "tank" && data[i].player === this.playerID){
+                    this._viewport.initialise(data[i].x, data[i].y);
+                }
             }
             this._initialised = true;
         } else {
@@ -105,7 +111,6 @@ class Easel {
                 if(index >= 0){
                     // Object already exists, update the stage
                     if(data[i].destroyed){
-                        console.log(data[i].uniqueName);
                         this._stage.removeChild(this._objects[index].image);
                     } else {
                         this._objects[index].image.x = data[i].x;

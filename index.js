@@ -26,6 +26,7 @@ http.listen(8000, function(){
         let player = new Player(socket.id);
         let isPlayer = game.addPlayer(player);
         connections.push(socket);
+        socket.emit('connection');
 
         socket.on('disconnect', () => {
             if(isPlayer && !game.pause){
