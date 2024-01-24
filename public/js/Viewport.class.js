@@ -12,6 +12,10 @@ class Viewport {
     #canvasLeft;
     #zoomPadding;
     #activeWindow;
+    #leftLimitMin;
+    #leftLimitMax;
+    #topLimitMin;
+    #topLimitMax;
     
     constructor(viewport, canvas, zoomPadding, activeWindow){
         this.#viewport = viewport;
@@ -24,6 +28,10 @@ class Viewport {
         this.#canvasLeft = this.#canvas.css('left');
         this.#zoomPadding = zoomPadding;
         this.#activeWindow = activeWindow;
+        this.#leftLimitMax = this.#canvasWidth - this.#viewportWidth - this.#zoomPadding;
+        this.#leftLimitMin = this.#zoomPadding;
+        this.#topLimitMax = this.#canvasHeight - this.#viewportHeight - this.#zoomPadding;
+        this.#topLimitMin = this.#zoomPadding;
     }
     
     get canvas(){return this.#canvas;}
@@ -37,6 +45,18 @@ class Viewport {
 
         let leftPosition = x - (this.#viewportWidth / 2);
         let topPosition = y - (this.#viewportHeight / 2);
+
+        if(leftPosition < this.#leftLimitMin){
+            leftPosition = -this.#leftLimitMin;
+        } else if(leftPosition > this.#leftLimitMax){
+            leftPosition = -this.#leftLimitMax;
+        }
+
+        if(topPosition < this.#topLimitMin){
+            topPosition = -this.#topLimitMin;
+        } else if(topPosition > this.#topLimitMax){
+            topPosition = -this.#topLimitMax;
+        }
 
         this.#canvas.animate({
             left: -leftPosition,
@@ -52,10 +72,6 @@ class Viewport {
         this.#canvasLeft = this.#canvas.css('left');
         this.#canvasTop = this.#canvas.css('top');
 
-        let leftLimitMax = this.#canvasWidth - this.#viewportWidth - this.#zoomPadding;
-        let leftLimitMin = this.#zoomPadding;
-        let topLimitMax = this.#canvasHeight - this.#viewportHeight - this.#zoomPadding;
-        let topLimitMin = this.#zoomPadding;
     };
 
     #zoomInOnInitialise = () => {

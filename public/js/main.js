@@ -21,8 +21,6 @@ let viewport = new Viewport($('#viewport'), $('#easelCan'), 100, activeWindow);
 let easel = new Easel('easelCan', manifest, 60, viewport);
 
 socket.on('connection', () => {
-    console.log(socket.id);
-    console.log('hit');
     easel.playerID = socket.id;
 });
 
