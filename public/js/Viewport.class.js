@@ -16,7 +16,7 @@ class Viewport {
     #leftLimitMax;
     #topLimitMin;
     #topLimitMax;
-    
+
     constructor(viewport, canvas, zoomPadding, activeWindow){
         this.#viewport = viewport;
         this.#canvas = canvas;
@@ -33,7 +33,7 @@ class Viewport {
         this.#topLimitMax = this.#canvasHeight - this.#viewportHeight - this.#zoomPadding;
         this.#topLimitMin = this.#zoomPadding;
     }
-    
+
     get canvas(){return this.#canvas;}
 
     initialise = (x, y) => {
@@ -47,15 +47,15 @@ class Viewport {
         let topPosition = y - (this.#viewportHeight / 2);
 
         if(leftPosition < this.#leftLimitMin){
-            leftPosition = -this.#leftLimitMin;
+            leftPosition = this.#leftLimitMin;
         } else if(leftPosition > this.#leftLimitMax){
-            leftPosition = -this.#leftLimitMax;
+            leftPosition = this.#leftLimitMax;
         }
 
         if(topPosition < this.#topLimitMin){
-            topPosition = -this.#topLimitMin;
+            topPosition = this.#topLimitMin;
         } else if(topPosition > this.#topLimitMax){
-            topPosition = -this.#topLimitMax;
+            topPosition = this.#topLimitMax;
         }
 
         this.#canvas.animate({
