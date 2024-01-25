@@ -116,6 +116,9 @@ class Easel {
                         this._objects[index].image.x = data[i].x;
                         this._objects[index].image.y = data[i].y;
                         this._objects[index].image.rotation = data[i].r;
+                        if(data[i].id === "tank" && data[i].player === this.playerID){
+                            this._viewport.moveCamera(data[i].x, data[i].y, data[i].linearVelocity);
+                        }
                     }
                 } else {
                     // Object does not exist, create new object and add to the stage

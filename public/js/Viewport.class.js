@@ -63,14 +63,41 @@ class Viewport {
             top: -topPosition,
             easing: 'swing'
         }, {
-            duration:3000,
+            duration : 3000,
             start : this.#zoomInOnInitialise()
         });
     };
 
-    moveCamera = (x, y) => {
+    moveCamera = (x, y, linearVelocity) => {
         this.#canvasLeft = this.#canvas.css('left');
         this.#canvasTop = this.#canvas.css('top');
+
+        let leftPosition = 0;
+        let topPosition = 0;
+
+        if(x >= (this.#canvasLeft + (this.#viewportWidth - this.#activeWindow.rightPadding)) && linearVelocity.x >= 0){
+            leftPosition = x + this.#activeWindow.rightPadding - this.#viewportWidth;
+        } else if(x <= this.canvasLeft + this.#activeWindow.leftPadding && linearVelocity.x <= 0){
+            leftPosition = x - this.#activeWindow.leftPadding;
+        } else {
+            leftPosition = this.#canvasLeft;
+        }
+
+        if(y >= (this.#canvasTop + (this.#viewportHeight - this.#activeWindow.bottomPadding)) && linearVelocity.y >= 0){
+            topPosition = y + this.#activeWindow.bottomPadding - this.#viewportHeight;
+        } else if(y <= this.#canvasTop + this.#activeWindow.topPadding && linearVelocity.y <= 0){
+            topPosition = y - this.#activeWindow.topPadding;
+        } else {
+            topPosition = this.#canvasTop;
+        }
+
+        this.#canvas.animate({
+            left: -leftPosition,
+            top: -topPosition,
+            easing: 'swing'
+        }, {
+            duration : '34ms',
+        });
 
     };
 

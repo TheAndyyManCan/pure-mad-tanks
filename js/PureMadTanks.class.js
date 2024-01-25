@@ -125,6 +125,7 @@ class PureMadTanks extends Game {
                 let uniqueName = j.GetBody().GetUserData().uniqueName;
                 let destroyed = false;
                 let player = j.GetBody().GetUserData().player;
+                let linearVelocity = j.GetBody().GetLinearVelocity();
 
                 // Check if the item is in the destroy list
                 for(let k in this._destroyList){
@@ -144,7 +145,8 @@ class PureMadTanks extends Game {
                     r: Math.floor(r),
                     assetID: assetID,
                     destroyed: destroyed,
-                    player: player
+                    player: player,
+                    linearVelocity: linearVelocity
                 });
             }
         }
