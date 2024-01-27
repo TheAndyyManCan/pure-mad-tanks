@@ -38,26 +38,28 @@ http.listen(8000, function(){
             game.removePlayer(socket.id);
         });
 
-        if(game.pause){
-            if(isPlayer){
-                socket.on('nicknameEnter', (nickname) => {
-                    player.setNickname(socket.id, nickname);
-                    player.setPlayerState(socket.id, 'ready');
-                    socket.emit('nicknameConfirm');
-                    if(game.checkPlayerStatus()){
-                        for(let i in connections){
-                            connections[i].emit('playersReady');
+        socket.on('connectClient', () => {
+            if(game.pause){
+                if(isPlayer){
+                    socket.on('nicknameEnter', (nickname) => {
+                        player.setNickname(socket.id, nickname);
+                        player.setPlayerState(socket.id, 'ready');
+                        socket.emit('nicknameConfirm');
+                        if(game.checkPlayerStatus()){
+                            for(let i in connections){
+                                connections[i].emit('playersReady');
+                            }
+                            game.init();
+                            game.pause = false;
                         }
-                        game.init();
-                        game.pause = false;
-                    }
-                });
+                    });
+                } else {
+                    socket.emit('spectatorWaiting');
+                }
             } else {
-                socket.emit('spectatorWaiting');
+                socket.emit('playersReady');
             }
-        } else {
-            socket.emit('playersReady');
-        }
+        });
 
         socket.on('keydown', (e) => {
             if(!game.pause && isPlayer){
@@ -113,6 +115,7 @@ game.contactListener.BeginContact = (contact) => {
                 tankPlayer.tank.changeUserData('health', newHealth);
             } else {
                 game.destroyObject(tankPlayer.tank.getBody());
+                game.endGame(tankPlayer.id);
             }
             game.destroyObject(fixa);
         }
@@ -128,6 +131,7 @@ game.contactListener.BeginContact = (contact) => {
                 tankPlayer.tank.changeUserData('health', newHealth);
             } else {
                 game.destroyObject(tankPlayer.tank.getBody());
+                game.endGame(tankPlayer.id);
             }
             game.destroyObject(fixb);
         }

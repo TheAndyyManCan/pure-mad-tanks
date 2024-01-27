@@ -19,11 +19,25 @@
     overflow: hidden;
 }
 
-#loginScreen {
+#splashScreen {
     height: 800px;
     width: 800px;
     background-color: black;
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#welcomeMessage {
+    color: white;
+    text-align: center;
+}
+
+#loginScreen {
+    height: 800px;
+    width: 800px;
+    background-color: black;
+    display: none;
     justify-content: center;
     align-items: center;
 }

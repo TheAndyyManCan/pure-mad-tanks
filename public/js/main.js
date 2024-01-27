@@ -31,6 +31,10 @@ socket.on('objdata', function(data){
 socket.on('spectatorWaiting', () => {
     $('#loginScreen').css('display', 'none');
     $('#spectatorWaitScreen').css('display', 'flex');
+    $('#viewport').css({
+        height: 2000,
+        width: 2000
+    })
 });
 
 socket.on('nicknameConfirm', () => {
@@ -46,10 +50,16 @@ socket.on('playersReady', () => {
     $('#easelCan').css('display', 'block');
 });
 
-socket.on('endgame', () => {
+socket.on('endGame', (data) => {
+    if(data.winner == Easel.playerID){
+        window.alert('You won!');
+    } else if(data.loser == Easel.playerID){
+        window.alert('You lose!');
+    }
+
     $('#easelCan').css('display', 'none');
     $('viewport').css('display', 'none');
-    $('#loginScreen').css('display', 'flex');
+    $('#splashScreen').css('display', 'flex');
 });
 
 $('#nicknameForm').submit((e) => {
@@ -72,6 +82,12 @@ $(document).keyup((e) => {
 
 $('#easelCan').mousedown((e) => {
     socket.emit('mousedown', e)
+});
+
+$('#splashScreen').click(function(e){
+    socket.emit('connectClient');
+    $('#splashScreen').css('display', 'none');
+    $('#loginScreen').css('display', 'flex');
 });
 
 $('#easelCan').mousemove((e) => {

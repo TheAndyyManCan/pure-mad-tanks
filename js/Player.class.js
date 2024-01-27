@@ -6,7 +6,7 @@ class Player {
 
     #id;
     #nickname;
-    #playerState; // connected, named, ready, disconnected
+    #playerState; // connected, named, ready, disconnected, winner, loser
     #tank;
     #mouseX;
     #mouseY;

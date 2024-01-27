@@ -217,9 +217,28 @@ class PureMadTanks extends Game {
         return wall;
     }
 
-    endGame = () => {
+    endGame = (loserid = null) => {
+
         this.#destroyAllObjects();
         this.pause = true;
+
+        if(loserid){
+            let loser = loserid;
+            let winner = '';
+
+            for(let i in this.#players){
+                if(this.#players[i].id != loserid){
+                    winner = this.#players[i].id;
+                }
+            }
+
+            this._io.emit('endGame', {
+                winner: winner,
+                loser: loser
+            });
+
+            this.#players.length = 0;
+        }
     };
 
     #splitWall = (wall, contactPoint) => {
