@@ -128,7 +128,7 @@ class Easel {
                             data[i].width,
                             data[i].height
                         ),
-                        id: data[i].id
+                        id: data[i].uniqueName
                     });
                     this._addToStage(this._objects[this._objects.length - 1].image, data[i].x, data[i].y);
                 }

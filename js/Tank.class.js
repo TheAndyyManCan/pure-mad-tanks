@@ -3,11 +3,32 @@
 const { DynamicWorldObject, BulletWorldObject } = require("./WorldObject.class");
 const { b2Vec2 } = require("./defs");
 
+/**
+ * @class Tank class to hold information about the tank and handle moving and shooting from the tank
+ * @property {bool} #reloading flag to determine if the tank is reloading after shooting
+ * @property {int} #rocketIndex rocket iterator to concatenate to new rockets to avoid duplicate ids
+ */
 class Tank extends DynamicWorldObject {
 
     #reloading = false;
     #rocketIndex = 0;
 
+    /**
+     * @constructor creates a new instance of the tank class
+     * @param {float} density the density of the new tank object
+     * @param {float} friction the friction of the new tank object
+     * @param {float} restitution the restitution (bounciness) of the new tank object
+     * @param {int} x the x co-ordinate of the new tank object
+     * @param {int} y the y co-ordinate of the new tank object
+     * @param {int} width the width in pixels of the new tank object
+     * @param {int} height the height in pixels of the new tank object
+     * @param {string} objid the unique id given to the tank to be used by box2d
+     * @param {string} uniquename unique name given to this specific tank object
+     * @param {int} SCALE the scale used by box2d
+     * @param {object} world the world the tank will be spawned in
+     * @param {string} assetID the assetID to be used on the client side by easelJS to pick the correct image
+     * @param {string} playerID the player id associated with the tank
+     */
     constructor(density, friction, restitution, x, y, width, height, objid, uniquename, SCALE, world, assetID, playerID){
         super(density, friction, restitution, x, y, width, height, objid, uniquename, SCALE, world, assetID);
         this.changeUserData('health', 100);
