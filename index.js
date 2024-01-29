@@ -78,6 +78,7 @@ http.listen(8000, function(){
         // When a mousedown event occurs, shoot a rocket from the player's tank
         socket.on('mousedown', (e) => {
             if(!game.pause && isPlayer){
+                console.log('hit');
                 player.tank.shootRocket(game.scale, game.world, player.mouseX, player.mouseY);
             }
         });

@@ -175,7 +175,7 @@ class CircleWorldObject extends WorldObject {
 /**
  * @class BulletWorldObject extension of the CircleWorldObject class. Does the exact same as the CircleWorldObject class but sets the bullet body def attribute to true
  */
-class BulletWorldObject extends CircleWorldObject {
+class BulletWorldObject extends WorldObject {
     /**
      * @constructor creates a new instance of the world object class
      * Also sets certain fixture definition and body definition attributes
@@ -192,8 +192,11 @@ class BulletWorldObject extends CircleWorldObject {
      * @param {string} assetid the assetid to be used on the client side by easeljs to pick the correct image
      */
     constructor(density, friction, restitution, x, y, objid, uniqueName, radius, SCALE, world, assetID){
-        super(density, friction, restitution, x, y, objid, uniqueName, radius, SCALE, world, assetID);
+        super(density, friction, restitution, x, y, SCALE, objid, uniqueName, radius, radius, assetID);
+        this._bodyDef.type = b2Body.b2_dynamicBody;
         this._bodyDef.bullet = true;
+        this._fixDef.shape = new b2CircleShape(radius / SCALE);
+        this._createObj(world, this._userDataFields);
     }
 }
 

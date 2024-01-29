@@ -81,6 +81,7 @@ $(document).keyup((e) => {
 });
 
 $('#easelCan').mousedown((e) => {
+    console.log('hit');
     socket.emit('mousedown', e)
 });
 
